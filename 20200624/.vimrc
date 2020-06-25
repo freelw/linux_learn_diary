@@ -7,6 +7,7 @@ Plugin 'majutsushi/tagbar' " Tag bar"
 Plugin 'scrooloose/nerdtree'
 Plugin 'w0rp/ale'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'ludovicchabant/vim-gutentags'
 call vundle#end()
 filetype plugin indent on
 
@@ -48,3 +49,13 @@ let g:ale_cpp_cppcheck_options = ''
 
 let g:ycm_server_python_interpreter='/usr/bin/python3'
 let g:ycm_global_ycm_extra_conf='~/.vim/.ycm_extra_conf.py'
+
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+set nu!
+syntax enable
+syntax on
+colorscheme desert
