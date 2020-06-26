@@ -63,3 +63,5 @@ set expandtab
 set ts=2
 set autoindent
 set shiftwidth=2
+autocmd FileType makefile set noexpandtab
+set list listchars=tab:>-
