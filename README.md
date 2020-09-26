@@ -43,4 +43,10 @@
 * 20200925
 
 		自己动手写docker demo 2.1.2
+
+* 20200926
+
+		自己动手写docker demo 2.1.3
+		自己动手写docker demo 2.1.4
+		自己动手写docker demo 2.1.5
 		
