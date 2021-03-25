@@ -32,8 +32,12 @@ int tun_alloc(int flags)
     return fd;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+    if (argc < 2) {
+        printf("please input server address.\n");
+        return -1;
+    }
     int tun_fd;
     char buf[1500];
     /* Flags: IFF_TUN   - TUN device (no Ethernet headers)
@@ -45,19 +49,22 @@ int main()
         perror("Allocating interface");
         exit(1);
     }
-    printf("i'm [server].\n");
-    int serv_sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    struct sockaddr_in serv_addr;
-    memset(&serv_addr, 0, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET; 
-    serv_addr.sin_addr.s_addr = inet_addr("0.0.0.0");
-    serv_addr.sin_port = htons(1234);
-    bind(serv_sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr));
-    listen(serv_sock, 20);
-    struct sockaddr_in clnt_addr;
-    socklen_t clnt_addr_size = sizeof(clnt_addr);
-    int clnt_sock = accept(serv_sock, (struct sockaddr*)&clnt_addr, &clnt_addr_size);
-    printf("vpn client is coming.\n");
+    int clnt_sock;
+	struct sockaddr_in server;
+	clnt_sock = socket(AF_INET , SOCK_STREAM , 0);
+	if (clnt_sock == -1)
+	{
+		printf("Could not create socket");
+	}
+	server.sin_addr.s_addr = inet_addr(argv[1]);
+	server.sin_family = AF_INET;
+	server.sin_port = htons( 1234 );
+	if (connect(clnt_sock , (struct sockaddr *)&server , sizeof(server)) < 0)
+	{
+		puts("connect error");
+		return 1;
+	}
+    printf("server conneted.\n");
     ioctl(clnt_sock, TUNSETNOCSUM, 1); 
     ioctl(tun_fd, TUNSETNOCSUM, 1); 
     fd_set fds;
@@ -70,12 +77,12 @@ int main()
         select(fm, &fds, NULL, NULL, NULL);
         if(FD_ISSET(clnt_sock, &fds)) {
             l = read(clnt_sock,buf,sizeof(buf));
-            printf("recieved %d bytes from vpn client.\n", l);
+            printf("recieved %d bytes from vpn server.\n", l);
             write(tun_fd,buf,l);
         }
         if(FD_ISSET(tun_fd, &fds)) {
             l = read(tun_fd, buf, sizeof(buf));
-            printf("sending %d bytes to vpn client.\n", l);
+            printf("sending %d bytes to vpn server.\n", l);
             write(clnt_sock, buf, l);
         }
     }
