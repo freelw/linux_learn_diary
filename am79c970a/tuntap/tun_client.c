@@ -50,20 +50,20 @@ int main(int argc, char *argv[])
         exit(1);
     }
     int clnt_sock;
-	struct sockaddr_in server;
-	clnt_sock = socket(AF_INET , SOCK_STREAM , 0);
-	if (clnt_sock == -1)
-	{
-		printf("Could not create socket");
-	}
-	server.sin_addr.s_addr = inet_addr(argv[1]);
-	server.sin_family = AF_INET;
-	server.sin_port = htons( 1234 );
-	if (connect(clnt_sock , (struct sockaddr *)&server , sizeof(server)) < 0)
-	{
-		puts("connect error");
-		return 1;
-	}
+    struct sockaddr_in server;
+    clnt_sock = socket(AF_INET , SOCK_STREAM , 0);
+    if (clnt_sock == -1)
+    {
+        printf("Could not create socket");
+    }
+    server.sin_addr.s_addr = inet_addr(argv[1]);
+    server.sin_family = AF_INET;
+    server.sin_port = htons( 1234 );
+    if (connect(clnt_sock , (struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        puts("connect error");
+        return 1;
+    }
     printf("server conneted.\n");
     ioctl(clnt_sock, TUNSETNOCSUM, 1); 
     ioctl(tun_fd, TUNSETNOCSUM, 1); 
