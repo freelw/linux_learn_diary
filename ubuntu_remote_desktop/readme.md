@@ -1,4 +1,4 @@
-# 在腾讯云cvm安装ubuntu 20.04 并配置远程桌面
+# 在腾讯云cvm安装ubuntu 20.04 并配置远程桌面 & 配置linux环境
 
 * 申请腾讯云cvm
 
@@ -15,4 +15,6 @@
 * 安装vscode
 
         sudo dpkg -i code_1.54.3-1615806378_amd64.deb
+
+* [使用vs调试linux内核](https://howardlau.me/programming/debugging-linux-kernel-with-vscode-qemu.html)
 
