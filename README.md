@@ -57,4 +57,8 @@
 * 20210331
 
 		使用腾讯云cvm搭建ubuntu远程桌面环境
-		
+
+* 20210408 todo
+
+
+	[配置linux vscode环境](https://code.visualstudio.com/docs/cpp/config-linux)
