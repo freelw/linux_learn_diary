@@ -66,5 +66,7 @@
 * 20210409 todo
 
 	[automake介绍](http://www.gnu.org/software/automake/manual/automake.html#Modernize-AM_005fINIT_005fAUTOMAKE-invocation)
-	
+
 	[autoconf介绍](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.70/autoconf.html#Top)
+
+	[Autotools Tutorial](https://www.lrde.epita.fr/~adl/autotools.html)
