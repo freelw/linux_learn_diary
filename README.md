@@ -72,3 +72,5 @@
 	[Autotools Tutorial](https://www.lrde.epita.fr/~adl/autotools.html)
 
 	[官方helloworld](https://www.gnu.org/software/automake/manual/html_node/Hello-World.html#Hello-World)
+
+	[autotools 介绍pdf](https://www.lrde.epita.fr/~adl/dl/autotools.pdf)
