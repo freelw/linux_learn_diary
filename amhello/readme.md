@@ -25,3 +25,5 @@
     configure 在真正执行的时候，用执行时候的传入的环境变量，加上config.site的环境变量，共同填充所有的 Makefile.in 和 config.h.in 文件
 
     最终生成的顶层 Makefile 文件会知道目录树中还有多少Makefile文件，这样才能在执行make的时候递归执行
+
+![](https://raw.githubusercontent.com/freelw/linux_learn_diary/master/amhello/img/autotool-min.png)
