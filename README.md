@@ -70,3 +70,5 @@
 	[autoconf介绍](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.70/autoconf.html#Top)
 
 	[Autotools Tutorial](https://www.lrde.epita.fr/~adl/autotools.html)
+
+	[官方helloworld](https://www.gnu.org/software/automake/manual/html_node/Hello-World.html#Hello-World)
