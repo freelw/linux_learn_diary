@@ -18,3 +18,6 @@
 
 * [使用vs调试linux内核](https://howardlau.me/programming/debugging-linux-kernel-with-vscode-qemu.html)
 
+* [add-auto-load-safe-path的含义](https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html)
+
+* [setupCommands的含义](https://stackoverflow.com/questions/60278274/docs-for-setupcommands-in-vscode-cppdbg-launch-json)
