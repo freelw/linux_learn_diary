@@ -61,7 +61,7 @@
 * 20210408 todo
 
 
-    [配置linux vscode环境](https://code.visualstudio.com/docs/cpp/config-linux)
+    [配置linux vscode环境](https://code.visualstudio.com/docs/cpp/config-linux) done
 
 * 20210409 todo
 
