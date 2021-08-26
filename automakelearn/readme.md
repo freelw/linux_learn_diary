@@ -232,3 +232,81 @@ It is now possible to run make. This will construct all the programs, libraries,
 In our example, this compiles the hello program. All files are constructed in place, in the source tree; we will see later how this can be changed.
 
     在我们的示例中，这将编译hello程序。所有文件都在源代码树中构建到位；我们稍后将看到如何更改这一点。
+
+make check causes the package’s tests to be run. 
+
+    make check 命令触发包运行测试用例。
+
+This step is not mandatory, but it is often good to make sure the programs that have been built behave as they should, before you decide to install them.
+
+    这一步不是强制性的，但在您决定安装程序之前最好还是执行一下确保构建出来的程序运行正确。
+
+Our example does not contain any tests, so running make check is a no-op.
+
+    我们的例子中没有任何测试用例，所以make check命令什么也不执行。
+
+After everything has been built, and maybe tested, it is time to install it on the system.
+
+    在构建好一切并可能进行测试之后，就可以将其安装到系统上了。
+
+That means copying the programs, libraries, header files, scripts, and other data files from the source directory to their final destination on the system. 
+
+    这意味着将程序、库、头文件、脚本和其他数据文件从源目录复制到它们在系统上的最终目标。
+
+The command make install will do that.
+
+    make install 命令会做这些事情。
+
+However, by default everything will be installed in subdirectories of /usr/local: binaries will go into /usr/local/bin, libraries will end up in /usr/local/lib, etc.
+
+    默认情况下，所有东西都会被安装到/usr/local：例如二进制文件会安装到/usr/local/bin，库文件会安装到/usr/local/lib
+
+This destination is usually not writable by any user, so we assume that we have to become root before we can run make install. 
+
+    目标路径一般不能被任何用户写，所以我们要确保是以root权限运行make install命令。
+
+In our example, running make install will copy the program hello into /usr/local/bin and README into /usr/local/share/doc/amhello.
+
+    在我们的例子中，执行make install命令会把hello拷贝到/usr/local/bin中，把README拷贝到/usr/local/share/doc/amhello中
+
+[![asciicast](https://asciinema.org/a/Eal6GkoGY7R92MsalpYgMSG1t.svg)](https://asciinema.org/a/Eal6GkoGY7R92MsalpYgMSG1t)
+
+A last and optional step is to run make installcheck. 
+
+    最后一个可选步骤是执行make installcheck命令。
+
+This command may run tests on the installed files. 
+
+    这个命令会在已经安装的文件上跑测试用例。
+
+make check tests the files in the source tree, while make installcheck tests their installed copies. 
+
+    make check命令会在源文件目录树中跑测试用例，而make installcheck会测试已经安装好的文件。
+
+The tests run by the latter can be different from those run by the former.
+
+    后者运行的测试可以与前者运行的测试不同。
+
+For instance, there are tests that cannot be run in the source tree. 
+
+    例如，有些测试不能在源文件目录树中运行。
+
+Conversely, some packages are set up so that make installcheck will run the very same tests as make check, only on different files (non-installed vs. installed).
+
+    但是也有一些软件包在这两种情况下会运行相同的测试用例，只是目标文件不同而已。
+
+It can make a difference, for instance when the source tree’s layout is different from that of the installation.
+
+    当源代码树的布局与安装的布局不同时，运行情况可能会有所不同。
+
+Furthermore it may help to diagnose an incomplete installation.
+
+    此外，这种方式有助于诊断安装是否完整。
+
+Presently most packages do not have any installcheck tests because the existence of installcheck is little known, and its usefulness is neglected.
+
+    目前大多数软件包没有任何安装检查测试，因为安装检查的存在鲜为人知，其有用性被忽视。
+
+Our little toy package is no better: make installcheck does nothing.
+
+    我们的小玩具包也好不到哪里去：make installcheck什么也不做。
