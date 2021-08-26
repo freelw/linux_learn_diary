@@ -208,3 +208,27 @@ The most common installation procedure looks as follows.
 The user first unpacks the package. Here, and in the following examples, we will use the non-portable tar zxf command for simplicity. 
 
     用户首先打开包裹。为了简单起见，在这里和下面的示例中，我们将使用不可移植的tar zxf命令。
+
+On a system without GNU tar installed, this command should read gunzip -c amhello-1.0.tar.gz | tar xf -.
+
+    在没有安装GNU tar的系统上，该命令应该是 gunzip -c amhello-1.0.tar.gz | tar xf -
+
+The user then enters the newly created directory to run the configure script. 
+
+    用户然后进入新创建的目录运行configure脚本。
+
+This script probes the system for various features, and finally creates the MakefileS.
+
+    该脚本探测系统的各种功能，并最终创建Makefile文件。
+
+In this toy example there are only two MakefileS, but in real-world projects, there may be many more, usually one Makefile per directory.
+
+    在这个玩具示例中，只有两个Makefile(译者注：根目录一个，src目录一个)，但在现实世界的项目中，可能有更多，通常每个目录一个Makefile。
+
+It is now possible to run make. This will construct all the programs, libraries, and scripts that need to be constructed for the package. 
+
+    现在可以运行make了。这将为包构建所有的程序、库和脚本。
+
+In our example, this compiles the hello program. All files are constructed in place, in the source tree; we will see later how this can be changed.
+
+    在我们的示例中，这将编译hello程序。所有文件都在源代码树中构建到位；我们稍后将看到如何更改这一点。
