@@ -11,7 +11,7 @@ Automake is a tool for automatically generating Makefile.ins from files called M
 
 Each Makefile.am is basically a series of make variable definitions, with rules being thrown in occasionally. 
 
-    每个Makefile.am基本上都是一系列make变量定义，偶尔会抛出一些规则。 ---
+    每个Makefile.am基本上都是一系列make变量定义，偶尔会抛出一些规则。 --- 有疑惑的翻译
 
 The generated Makefile.ins are compliant with the GNU Makefile standards.
 
@@ -122,3 +122,61 @@ Today this process has been standardized in the GNU project.
     现在这个过程已经在GNU项目中标准化了。
 
 The GNU Coding Standards (see [The Release Process](https://www.gnu.org/prep/standards/standards.html#Managing-Releases) in The GNU Coding Standards) explains how each package of the GNU project should have a configure script, and the minimal interface it should have.
+
+    GNU编码标准(参见GNU编码标准中的发布过程)解释了GNU项目的每个包应该如何拥有一个配置脚本，以及它应该具有的必要接口。
+
+The Makefile too should follow some established conventions.
+
+    Makefile也应该遵循一些既定的约定。
+
+The result? A unified build system that makes all packages almost indistinguishable by the installer.
+
+    结果是什么呢？一个统一的构建系统，使得安装程序几乎不用区分所有软件包。
+
+ In its simplest scenario, all the installer has to do is to unpack the package, run ./configure && make && make install, and repeat with the next package to install.
+
+    在其最简单的场景中，安装程序所需做的全部工作就是解压软件包，运行./configure && make &&make install，然后重复执行下一个要安装的软件包。
+
+We call this build system the GNU Build System, since it was grown out of the GNU project.
+
+    我们称这个构建系统为GNU构建系统，因为它是从GNU项目发展而来的。
+
+However it is used by a vast number of other packages: following any existing convention has its advantages.
+
+    然而，它被大量其他包使用：遵循任何现有的约定都有其优势。--- 有疑惑的翻译
+
+The Autotools are tools that will create a GNU Build System for your package. 
+
+    Autotools是为您的包创建GNU构建系统的工具。
+
+Autoconf mostly focuses on configure and Automake on Makefiles.
+
+    Autoconf主要专注于configure
+    Automake主要专注于Makefile
+
+It is entirely possible to create a GNU Build System without the help of these tools. 
+
+    完全可以在没有这些工具的帮助下创建GNU构建系统。
+
+However it is rather burdensome and error-prone. We will discuss this again after some illustration of the GNU Build System in action.
+
+    然而，它相当繁重且容易出错。在对GNU构建系统进行一些实际演示之后，我们将再次讨论这个问题。
+
+## GNU Build System举例
+
+In this section we explore several use cases for the GNU Build System.
+
+    在本节中，我们将探讨GNU构建系统的几个用例。
+
+You can replay all of these examples on the amhello-1.0.tar.gz package distributed with Automake.
+
+    您可以在Automake附带的amhello-1.0.tar.gz包中重现所有这些示例。
+
+ If Automake is installed on your system, you should find a copy of this file in prefix/share/doc/automake/amhello-1.0.tar.gz
+
+    如果你的系统装安装了Automake，你可以在prefix/share/doc/automake/amhello-1.0.tar.gz找到这个文件。
+
+where prefix is the installation prefix specified during configuration (prefix defaults to /usr/local, however if Automake was installed by some GNU/Linux distribution it most likely has been set to /usr).
+
+    prefix 是你在安装的时候定义的安装路径前缀，默认在/usr/local。但是有的发行版会在/usr中
+    （比如译者的路径：/usr/share/doc/automake-1.13.4/amhello-1.0.tar.gz）
