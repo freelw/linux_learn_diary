@@ -519,8 +519,39 @@ The GNU Build System distinguishes two trees: the source tree, and the build tre
 
 The source tree is rooted in the directory containing the configure script. It contains all the source files (those that are distributed), and may be arranged using several subdirectories.
 
-    源树位于包含配置脚本的目录中。它包含所有源文件(那些已分发的源文件)，并且可以使用几个子目录进行排列。
+    源树位于包含配置脚本的目录中。它包含所有源文件(那些分发的源文件)，并且可以使用几个子目录进行排列。
 
 The build tree is rooted in the current directory at the time configure was run, and is populated with all object files, programs, libraries, and other derived files built from the sources (and hence not distributed).
 
-    构建树以configure运行时的当前目录为根，并填充了所有目标文件、程序、库和从源代码构建的其他派生文件(因此不是分发的)。--- 有疑问的翻译
+    构建树以configure运行时的当前目录为根，并填充了所有目标文件、程序、库和从源代码构建的其他派生文件(派生的文件不是分发的是生成的)。
+
+The build tree usually has the same subdirectory layout as the source tree; its subdirectories are created automatically by the build system.
+
+    构建树通常与源树具有相同的子目录布局；其子目录由构建系统自动创建。
+
+If configure is executed in its own directory, the source and build trees are combined: derived files are constructed in the same directories as their sources. 
+
+    如果在其自己的目录中执行configure，则源文件和构建树是同一个：派生文件在和源文件相同的目录中构建处理啊。
+
+This was the case in our first installation example (see Basic Installation).
+
+    这就是我们的第一个安装示例中的情况(请参见Basic Installation)。
+
+A common request from users is that they want to confine all derived files to a single directory, to keep their source directories uncluttered. 
+
+    用户的一个常见要求是，他们希望将所有派生文件限制在单个目录中，以保持其源目录的整洁。
+
+Here is how we could run configure to create everything in a build tree (that is, subdirectory) called build/.
+
+    下面是我们如何运行configure来在build目录中构建build tree
+
+    ~ % tar zxf ~/amhello-1.0.tar.gz
+    ~ % cd amhello-1.0
+    ~/amhello-1.0 % mkdir build && cd build
+    ~/amhello-1.0/build % ../configure
+    …
+    ~/amhello-1.0/build % make
+    …
+
+
+
