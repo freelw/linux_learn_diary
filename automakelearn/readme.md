@@ -398,3 +398,129 @@ Each of these directories has a role which is often obvious from its name.
 In a package, any installable file will be installed in one of these directories.
 
     在软件包中，任何可安装文件都将安装在这些目录之一中。
+
+For instance in amhello-1.0, the program hello is to be installed in bindir, the directory for binaries.
+
+    例如，在amhello-1.0中，程序hello将安装在bin
+    中，这是二进制文件的目录。
+
+The default value for this directory is /usr/local/bin, but the user can supply a different value when calling configure.
+
+    该目录的默认值是/usr/local/bin，但是用户可以在调用configure时提供一个不同的值。
+
+Also the file README will be installed into docdir, which defaults to /usr/local/share/doc/amhello.
+
+    此外，自述文件将安装到doc目录中，该目录默认为/usr/local/share/doc/amhello。
+
+As a user, if you wish to install a package on your own account, you could proceed as follows:
+
+    作为用户，如果您希望自己安装软件包，可以按照以下步骤操作：
+
+    ~/amhello-1.0 % ./configure --prefix ~/usr
+    …
+    ~/amhello-1.0 % make
+    …
+    ~/amhello-1.0 % make install
+    …
+
+This would install ~/usr/bin/hello and ~/usr/share/doc/amhello/README.
+
+    这将安装~/usr/bin/hello和~/usr/share/doc/amhello/readme。
+
+The list of all such directory options is shown by ./configure --help.
+
+    这样的目录选项可以通过./configure --help查询。
+
+##Standard Configuration Variables
+
+The GNU Coding Standards also define a set of standard configuration variables used during the build. Here are some:
+
+    GNU编码标准还定义了构建期间使用的一组标准环境变量。
+    这里有一些：
+
+    CC
+        C compiler command
+
+    CFLAGS
+        C compiler flags
+
+    CXX
+        C++ compiler command
+
+    CXXFLAGS
+        C++ compiler flags
+
+    LDFLAGS
+        linker flags
+
+    CPPFLAGS
+        C/C++ preprocessor flags
+
+configure usually does a good job at setting appropriate values for these variables, but there are cases where you may want to override them. 
+
+    configure通常可以很好地为这些变量设置适当的值，但在某些情况下，你可能想要覆盖它们。
+
+For instance you may have several versions of a compiler installed and would like to use another one, you may have header files installed outside the default search path of the compiler, or even libraries out of the way of the linker.
+
+    例如，你可能安装了多个版本的编译器并希望使用另一个版本，你可能将头文件安装在编译器的默认搜索路径之外，甚至可能安装了链接器之外的库。
+
+Here is how one would call configure to force it to use gcc-3 as C compiler, use header files from ~/usr/include when compiling, and libraries from ~/usr/lib when linking.
+
+    下面是如何调用configure强制它使用gcc-3作为C编译器，编译时使用~/usr/include中的头文件，链接时使用~/usr/lib中的库。
+
+    ~/amhello-1.0 % ./configure --prefix ~/usr CC=gcc-3 \
+    CPPFLAGS=-I$HOME/usr/include LDFLAGS=-L$HOME/usr/lib
+
+Again, a full list of these variables appears in the output of ./configure --help.
+
+    同样，这些变量的完整列表显示在./configure--help的输出中。
+
+##Overriding Default Configuration Setting with config.site
+
+When installing several packages using the same setup, it can be convenient to create a file to capture common settings.
+
+    当使用相同的配置安装多个软件包时，创建一个文件来捕获公共设置会很方便。
+
+If a file named prefix/share/config.site exists, configure will source it at the beginning of its execution.
+
+    如果存在名为prefix/share/config.site的文件，则configure将在其执行开始时将source这个文件。
+
+Recall the command from the previous section:
+
+    回想上一节中的命令：
+
+    ~/amhello-1.0 % ./configure --prefix ~/usr CC=gcc-3 \
+    CPPFLAGS=-I$HOME/usr/include LDFLAGS=-L$HOME/usr/libs
+
+Assuming we are installing many package in ~/usr, and will always want to use these definitions of CC, CPPFLAGS, and LDFLAGS, we can automate this by creating the following
+
+    假设我们在~/usr中安装了许多软件包，并且总是希望使用CC、CPPFLAGS和LDFLAGS的这些定义，我们可以通过创建以下内容来实现自动化
+    
+    ~/usr/share/config.site file:
+    test -z "$CC" && CC=gcc-3
+    test -z "$CPPFLAGS" && CPPFLAGS=-I$HOME/usr/include
+    test -z "$LDFLAGS" && LDFLAGS=-L$HOME/usr/lib
+
+Now, any time a configure script is using the ~/usr prefix, it will execute the above config.site and define these three variables.
+
+    现在，只要配置脚本使用~/usr前缀，它就会执行上面的config.site并定义这三个变量。
+
+    ~/amhello-1.0 % ./configure --prefix ~/usr
+    configure: loading site script /home/adl/usr/share/config.site
+    …
+
+See [Setting Site Defaults](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.70/autoconf.html#Site-Defaults) in The Autoconf Manual, for more information about this feature.
+
+##Parallel Build Trees (a.k.a. VPATH Builds) 并行构建树
+
+The GNU Build System distinguishes two trees: the source tree, and the build tree. These are two directories that may be the same, or different.
+
+    GNU构建系统区分两个树：源树和构建树。这两个目录可能相同，也可能不同。
+
+The source tree is rooted in the directory containing the configure script. It contains all the source files (those that are distributed), and may be arranged using several subdirectories.
+
+    源树位于包含配置脚本的目录中。它包含所有源文件(那些已分发的源文件)，并且可以使用几个子目录进行排列。
+
+The build tree is rooted in the current directory at the time configure was run, and is populated with all object files, programs, libraries, and other derived files built from the sources (and hence not distributed).
+
+    构建树以configure运行时的当前目录为根，并填充了所有目标文件、程序、库和从源代码构建的其他派生文件(因此不是分发的)。--- 有疑问的翻译
