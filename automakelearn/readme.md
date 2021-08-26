@@ -180,3 +180,27 @@ where prefix is the installation prefix specified during configuration (prefix d
 
     prefix 是你在安装的时候定义的安装路径前缀，默认在/usr/local。但是有的发行版会在/usr中
     （比如译者的路径：/usr/share/doc/automake-1.13.4/amhello-1.0.tar.gz）
+
+If you do not have a copy of Automake installed, you can find a copy of this file inside the doc/ directory of the Automake package.
+
+    如果您没有安装Automake的副本，您可以在Automake软件包的doc/目录中找到该文件的副本。
+
+Some of the following use cases present features that are in fact extensions to the GNU Build System.
+
+    下面的一些用例提供了一些实际上是GNU构建系统扩展的特性。
+
+Read: they are not specified by the GNU Coding Standards, but they are nonetheless part of the build system created by the Autotools.
+
+    它们没有被GNU编码标准指定，但是它们仍然是由Autotools创建的构建系统的一部分。
+
+To keep things simple, we do not point out the difference. Our objective is to show you many of the features that the build system created by the Autotools will offer to you.
+
+    为了简单起见，我们没有指出区别。我们的目标是展示AutoTools创建的构建系统提供的功能。
+
+## Basic Installation
+
+The most common installation procedure looks as follows.
+
+    最常见的安装过程如下所示。
+
+!(最常见的安装)[https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0]
