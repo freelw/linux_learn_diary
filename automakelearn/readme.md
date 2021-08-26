@@ -203,4 +203,4 @@ The most common installation procedure looks as follows.
 
     最常见的安装过程如下所示。
 
-[![asciicast](https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0.svg)](https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0)
+<a href="https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0" target="_blank"><img src="https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0.svg" /></a>
