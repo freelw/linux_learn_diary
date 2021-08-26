@@ -203,4 +203,8 @@ The most common installation procedure looks as follows.
 
     最常见的安装过程如下所示。
 
-<a href="https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0" target="_blank"><img src="https://asciinema.org/a/FA6yOi40CGti54X3hiBEttcE0.svg" /></a>
+[![asciicast](https://asciinema.org/a/6EDtdRm9x0zo8ChMIxDrHVVgO.svg)](https://asciinema.org/a/6EDtdRm9x0zo8ChMIxDrHVVgO)
+
+The user first unpacks the package. Here, and in the following examples, we will use the non-portable tar zxf command for simplicity. 
+
+    用户首先打开包裹。为了简单起见，在这里和下面的示例中，我们将使用不可移植的tar zxf命令。
