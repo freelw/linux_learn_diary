@@ -310,3 +310,91 @@ Presently most packages do not have any installcheck tests because the existence
 Our little toy package is no better: make installcheck does nothing.
 
     我们的小玩具包也好不到哪里去：make installcheck什么也不做。
+
+## Standard Makefile Targets
+
+So far we have come across four ways to run make in the GNU Build System: make, make check, make install, and make installcheck. 
+
+    到目前为止，我们已经遇到了四种在GNU构建系统中运行make的方法：make、make check、make install和make installcheck。
+
+The words check, install, and installcheck, passed as arguments to make, are called targets. 
+
+    命令字check、install和作为参数传递给make，称为目标。
+
+make is a shorthand for make all, all being the default target in the GNU Build System.
+    Make是make all的缩写，all是GNU构建系统中的默认目标。
+
+Here is a list of the most useful targets that the GNU Coding Standards specify.
+
+    下面是GNU编码标准指定的最有用的目标列表。
+
+make all
+
+    Build programs, libraries, documentation, etc. (same as make).
+    构建程序、库、文档等(与make相同)。
+
+make install
+
+    Install what needs to be installed, copying the files from the package’s tree to system-wide directories.
+    安装需要安装的内容，将文件从软件包的树复制到系统范围的目录。
+
+make install-strip
+
+    Same as make install, then strip debugging symbols. Some users like to trade space for useful bug reports...
+    与make install相同，然后剥离调试符号。一些用户喜欢用空间换取有用的错误报告……
+
+make uninstall
+
+    The opposite of make install: erase the installed files. (This needs to be run from the same build tree that was installed.)
+    与make install相反：删除已安装的文件。(这需要从安装的同一构建树中运行。)
+
+make clean
+
+    Erase from the build tree the files built by make all.
+    从构建树中删除由make all构建的文件。
+
+make distclean
+
+    Additionally erase anything ./configure created.
+    额外删除./configure命令生成的文件。
+
+make check
+
+    Run the test suite, if any.
+    如果有测试用例就运行。
+
+make installcheck
+
+    Check the installed programs or libraries, if supported.
+    检查已安装的程序或库(如果支持)。
+
+make dist
+
+    Recreate package-version.tar.gz from all the source files.
+    从所有源文件重新创建package-version.tar.gz。
+
+## Standard Directory Variables
+The GNU Coding Standards also specify a hierarchy of variables to denote installation directories. Some of these are:
+
+    GNU编码标准还指定了变量层次结构来表示安装目录。其中一些是：
+
+    Directory variable	Default value
+    prefix	/usr/local
+    exec_prefix	${prefix}
+        bindir	${exec_prefix}/bin
+        libdir	${exec_prefix}/lib
+        …
+    includedir	${prefix}/include
+    datarootdir	${prefix}/share
+        datadir	${datarootdir}
+        mandir	${datarootdir}/man
+        infodir	${datarootdir}/info
+        docdir	${datarootdir}/doc/${PACKAGE}
+
+Each of these directories has a role which is often obvious from its name.
+
+    这些目录中的每一个都具有从其名称中通常可以明显看出的作用。
+
+In a package, any installable file will be installed in one of these directories.
+
+    在软件包中，任何可安装文件都将安装在这些目录之一中。
