@@ -553,5 +553,114 @@ Here is how we could run configure to create everything in a build tree (that is
     ~/amhello-1.0/build % make
     …
 
+These setups, where source and build trees are different, are often called parallel builds or VPATH builds. 
+
+    这种源树和构建树不同的构建行为被称为parallel builds或者VPATH builds。
+
+The expression parallel build is misleading: the word parallel is a reference to the way the build tree shadows the source tree, it is not about some concurrency in the way build commands are run.
+
+    parallel build 这种表达比较有误导性：“并行”一词指的是构建树对源树的影响方式，它与构建命令运行方式中的某些并发性无关。
+
+For this reason we refer to such setups using the name VPATH builds in the following.
+
+    出于这个原因，我们在下面使用名称VPATH build来指代这样的设置。
+
+VPATH is the name of the make feature used by the Makefiles to allow these builds (see VPATH Search [Path for All Prerequisites](https://www.gnu.org/software/make/manual/make.html#General-Search) in The GNU Make Manual).
+
+    VPATH是关于这个特性的环境变量，见链接。
+
+##### 临时插入VPATH的解释
+###### VPATH: Search Path for All Prerequisites
+[资源](https://www.gnu.org/software/make/manual/make.html#General-Search)
 
 
+The value of the make variable VPATH specifies a list of directories that make should search.
+
+    VPATH指定一个目录列表，make在这个列表中去搜索。
+
+Most often, the directories are expected to contain prerequisite files that are not in the current directory; however, make uses VPATH as a search list for both prerequisites and targets of rules.
+
+    通常，这些目录应该包含不在当前目录中的先决条件文件；
+    make使用VPATH作为先决条件和目标的搜索列表。
+
+Thus, if a file that is listed as a target or prerequisite does not exist in the current directory, make searches the directories listed in VPATH for a file with that name.
+
+    因此，如果当前目录中不存在被列为目标或先决条件的文件，则make将在VPATH中列出的目录中搜索具有该名称的文件。
+
+Rules may then specify the names of files in the prerequisite list as if they all existed in the current directory.
+
+    然后，规则可以指定先决条件列表中的文件名，就好像它们都存在于当前目录中一样。
+
+In the VPATH variable, directory names are separated by colons or blanks. The order in which directories are listed is the order followed by make in its search.
+
+    在VPATH变量中，目录名称用冒号或空格分隔。
+    make 按照名字出现的先后顺序去搜索。
+
+例如：
+
+    VPATH = src:../headers
+
+    指定两个搜索路径 src 和 ../headers
+
+    foo.o : foo.c
+
+    这时上面的这条规则被转化成这样
+
+    foo.o : src/foo.c
+##### 从VPATH的解释返回回来
+
+VPATH builds have other interesting uses. One is to build the same sources with multiple configurations. For instance:
+
+    VPATH构建还有其他有趣的用途。一种是使用多个配置构建相同的源代码。例如：
+
+    ~ % tar zxf ~/amhello-1.0.tar.gz
+    ~ % cd amhello-1.0
+    ~/amhello-1.0 % mkdir debug optim && cd debug
+    ~/amhello-1.0/debug % ../configure CFLAGS='-g -O0'
+    …
+    ~/amhello-1.0/debug % make
+    …
+    ~/amhello-1.0/debug % cd ../optim
+    ~/amhello-1.0/optim % ../configure CFLAGS='-O3 -fomit-frame-pointer'
+    …
+    ~/amhello-1.0/optim % make
+    …
+
+With network file systems, a similar approach can be used to build the same sources on different machines. 
+
+    对于网络文件系统，可以使用类似的方法在不同的机器上构建相同的源代码。
+
+For instance, suppose that the sources are installed on a directory shared by two hosts: HOST1 and HOST2, which may be different platforms.
+
+    例如，假设源码安装在由两台主机共享的目录上：HOST1和HOST2，这两台主机可能是不同的平台。
+
+    ~ % cd /nfs/src
+    /nfs/src % tar zxf ~/amhello-1.0.tar.gz
+
+On the first host, you could create a local build directory:
+
+    在第一台主机上，你可以创建本地构建目录：
+
+    [HOST1] ~ % mkdir /tmp/amh && cd /tmp/amh
+    [HOST1] /tmp/amh % /nfs/src/amhello-1.0/configure
+    ...
+    [HOST1] /tmp/amh % make && sudo make install
+    ...
+
+On the second host, you would do exactly the same, possibly at the same time:
+
+    在第二台主机上，你可能会同时执行完全相同的操作：
+
+    [HOST2] ~ % mkdir /tmp/amh && cd /tmp/amh
+    [HOST2] /tmp/amh % /nfs/src/amhello-1.0/configure
+    ...
+    [HOST2] /tmp/amh % make && sudo make install
+    ...
+
+In this scenario, nothing forbids the /nfs/src/amhello-1.0 directory from being read-only.
+
+    在这种场景下，其实/nfs/src/amhello-1.0目录完全是可以只读的。
+
+In fact VPATH builds are also a means of building packages from a read-only medium such as a CD-ROM. (The FSF used to sell CD-ROMs with unpacked source code, before the GNU project grew so big.)
+
+    事实上，VPATH构建也是从CD-ROM等只读介质构建包的一种方法。(在GNU项目变得如此庞大之前，FSF过去销售的是未打包源代码的CD-ROM。)
