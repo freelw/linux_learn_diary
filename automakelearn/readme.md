@@ -431,7 +431,7 @@ The list of all such directory options is shown by ./configure --help.
 
     这样的目录选项可以通过./configure --help查询。
 
-##Standard Configuration Variables
+## Standard Configuration Variables
 
 The GNU Coding Standards also define a set of standard configuration variables used during the build. Here are some:
 
@@ -511,7 +511,7 @@ Now, any time a configure script is using the ~/usr prefix, it will execute the 
 
 See [Setting Site Defaults](https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.70/autoconf.html#Site-Defaults) in The Autoconf Manual, for more information about this feature.
 
-##Parallel Build Trees (a.k.a. VPATH Builds) 并行构建树
+## Parallel Build Trees (a.k.a. VPATH Builds) 并行构建树
 
 The GNU Build System distinguishes two trees: the source tree, and the build tree. These are two directories that may be the same, or different.
 
@@ -664,3 +664,31 @@ In this scenario, nothing forbids the /nfs/src/amhello-1.0 directory from being 
 In fact VPATH builds are also a means of building packages from a read-only medium such as a CD-ROM. (The FSF used to sell CD-ROMs with unpacked source code, before the GNU project grew so big.)
 
     事实上，VPATH构建也是从CD-ROM等只读介质构建包的一种方法。(在GNU项目变得如此庞大之前，FSF过去销售的是未打包源代码的CD-ROM。)
+
+## Two-Part Installation
+
+In our last example (see VPATH Builds), a source tree was shared by two hosts, but compilation and installation were done separately on each host.
+
+    在我们的上一个示例(参见VPATH构建)中，源树由两台主机共享，但编译和安装是在每台主机上单独完成的。
+
+The GNU Build System also supports networked setups where part of the installed files should be shared amongst multiple hosts.
+
+    GNU构建系统还支持联网安装，其中应在多个主机之间共享部分已安装的文件。
+
+It does so by distinguishing architecture-dependent files from architecture-independent files, and providing two Makefile targets to install each of these classes of files.
+
+    它通过区分依赖于体系结构的文件和独立于体系结构的文件来实现这一点，并提供两个Makefile目标来安装这些类文件中的每一个。
+
+These targets are install-exec for architecture-dependent files and install-data for architecture-independent files.
+
+    目标 install-exec 跟体系结构相关
+    目标 install-data 跟体系结构无关
+
+The command we used up to now, make install, can be thought of as a shorthand for make install-exec install-data.
+
+    到目前为止，我们使用的命令make install可以看作是make install-exec install-data的简写。
+
+From the GNU Build System point of view, the distinction between architecture-dependent files and architecture-independent files is based exclusively on the directory variable used to specify their installation destination. 
+
+    从GNU构建系统的角度来看，依赖于体系结构的文件和不依赖体系结构的文件之间的区别就是目标目录变量。
+
