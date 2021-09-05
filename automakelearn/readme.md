@@ -692,3 +692,38 @@ From the GNU Build System point of view, the distinction between architecture-de
 
     从GNU构建系统的角度来看，依赖于体系结构的文件和不依赖体系结构的文件之间的区别就是目标目录变量。
 
+In the list of directory variables we provided earlier (see [Standard Directory Variables](https://www.gnu.org/software/automake/manual/automake.html#Standard-Directory-Variables)), all the variables based on exec-prefix designate architecture-dependent directories whose files will be installed by make install-exec. 
+
+    在我们前面提供的目录变量列表中，所有基于exec-prefix的变量都指定依赖于体系结构的目录，这些目录的文件将由make install-exec安装。
+
+The others designate architecture-independent directories and will serve files installed by make install-data. See The [Two Parts of Install](https://www.gnu.org/software/automake/manual/automake.html#The-Two-Parts-of-Install), for more details.
+
+    反过来其他的变量指定非体系结构的目录，这些目录的文件将由make install-data安装。
+
+Here is how we could revisit our two-host installation example, assuming that (1) we want to install the package directly in /usr, and (2) the directory /usr/share is shared by the two hosts.
+
+    这里我们重新看一下上面两台主机共享安装例子，假设现在我们要把包安装到/usr路径，并且共享/usr/share路径
+
+On the first host we would run
+
+    在第一台主机上
+
+    [HOST1] ~ % mkdir /tmp/amh && cd /tmp/amh
+    [HOST1] /tmp/amh % /nfs/src/amhello-1.0/configure --prefix /usr
+    ...
+    [HOST1] /tmp/amh % make && sudo make install
+    ...
+
+On the second host, however, we need only install the architecture-specific files.
+
+    在第二台主机上，我们只安装目标体系结构相关的文件。
+
+    [HOST2] ~ % mkdir /tmp/amh && cd /tmp/amh
+    [HOST2] /tmp/amh % /nfs/src/amhello-1.0/configure --prefix /usr
+    ...
+    [HOST2] /tmp/amh % make && sudo make install-exec
+    ...
+
+    译者注：
+        1. 这里描述隐含了/usr/share是两台机器共享的一个网路路径
+        2. --prefix 会推导出两个变量，exec_prefix & docdir，其中exec_prefix受make install-exec影响，docdir受到make install-data影响
