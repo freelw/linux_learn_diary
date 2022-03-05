@@ -1,0 +1,39 @@
+socket(AF_INET, SOCK_RAW, IPPROTO_ICMP) = 3
+socket(AF_INET6, SOCK_DGRAM, IPPROTO_ICMPV6) = -1 EACCES (权限不够)
+socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6) = 4
+capget({version=_LINUX_CAPABILITY_VERSION_3, pid=0}, NULL) = 0
+capget({version=_LINUX_CAPABILITY_VERSION_3, pid=0}, {effective=1<<CAP_NET_RAW, permitted=1<<CAP_NET_ADMIN|1<<CAP_NET_RAW, inheritable=0}) = 0
+capset({version=_LINUX_CAPABILITY_VERSION_3, pid=0}, {effective=0, permitted=1<<CAP_NET_ADMIN|1<<CAP_NET_RAW, inheritable=0}) = 0
+openat(AT_FDCWD, "/usr/lib64/charset.alias", O_RDONLY|O_NOFOLLOW) = -1 ENOENT (没有那个文件或目录)
+socket(AF_INET, SOCK_DGRAM, IPPROTO_IP) = 5
+connect(5, {sa_family=AF_INET, sin_port=htons(1025), sin_addr=inet_addr("127.0.0.1")}, 16) = 0
+getsockname(5, {sa_family=AF_INET, sin_port=htons(36701), sin_addr=inet_addr("127.0.0.1")}, [16]) = 0
+close(5)                                = 0
+setsockopt(3, SOL_RAW, ICMP_FILTER, ~(1<<ICMP_ECHOREPLY|1<<ICMP_DEST_UNREACH|1<<ICMP_SOURCE_QUENCH|1<<ICMP_REDIRECT|1<<ICMP_TIME_EXCEEDED|1<<ICMP_PARAMETERPROB), 4) = 0
+setsockopt(3, SOL_IP, IP_RECVERR, [1], 4) = 0
+setsockopt(3, SOL_SOCKET, SO_SNDBUF, [324], 4) = 0
+setsockopt(3, SOL_SOCKET, SO_RCVBUF, [65536], 4) = 0
+getsockopt(3, SOL_SOCKET, SO_RCVBUF, [131072], [4]) = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x1), ...}) = 0
+write(1, "PING 127.0.0.1 (127.0.0.1) 56(84"..., 49PING 127.0.0.1 (127.0.0.1) 56(84) bytes of data.
+) = 49
+setsockopt(3, SOL_SOCKET, SO_TIMESTAMP_OLD, [1], 4) = 0
+setsockopt(3, SOL_SOCKET, SO_SNDTIMEO_OLD, "\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16) = 0
+setsockopt(3, SOL_SOCKET, SO_RCVTIMEO_OLD, "\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 16) = 0
+getpid()                                = 209687
+rt_sigaction(SIGINT, {sa_handler=0x56393198a2d0, sa_mask=[], sa_flags=SA_RESTORER|SA_INTERRUPT, sa_restorer=0x7f67e6818400}, NULL, 8) = 0
+rt_sigaction(SIGALRM, {sa_handler=0x56393198a2d0, sa_mask=[], sa_flags=SA_RESTORER|SA_INTERRUPT, sa_restorer=0x7f67e6818400}, NULL, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=0x56393198a2c0, sa_mask=[], sa_flags=SA_RESTORER|SA_INTERRUPT, sa_restorer=0x7f67e6818400}, NULL, 8) = 0
+rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+ioctl(1, TCGETS, {B38400 opost isig icanon echo ...}) = 0
+ioctl(1, TIOCGWINSZ, {ws_row=55, ws_col=214, ws_xpixel=2996, ws_ypixel=1870}) = 0
+sendto(3, "\10\0\25|3\27\0\1\311\5\332c\0\0\0\0?/\16\0\0\0\0\0\20\21\22\23\24\25\26\27"..., 64, 0, {sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("127.0.0.1")}, 16) = 64
+recvmsg(3, {msg_name={sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("127.0.0.1")}, msg_namelen=128->16, msg_iov=[{iov_base="E\0\0TZ\271\0\0@\1!\356\177\0\0\1\177\0\0\1\0\0\35|3\27\0\1\311\5\332c"..., iov_len=192}], msg_iovlen=1, msg_control=[{cmsg_len=32, cmsg_level=SOL_SOCKET, cmsg_type=SO_TIMESTAMP_OLD, cmsg_data={tv_sec=1675232713, tv_usec=929697}}], msg_controllen=32, msg_flags=0}, 0) = 84
+write(1, "64 bytes from 127.0.0.1: icmp_se"..., 5764 bytes from 127.0.0.1: icmp_seq=1 ttl=64 time=0.098 ms
+) = 57
+recvmsg(3, {msg_namelen=128}, 0)        = -1 EAGAIN (资源暂时不可用)
+sendto(3, "\10\0\276\2413\27\0\2\312\5\332c\0\0\0\0\224\10\17\0\0\0\0\0\20\21\22\23\24\25\26\27"..., 64, 0, {sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("127.0.0.1")}, 16) = 64
+recvmsg(3, {msg_name={sa_family=AF_INET, sin_port=htons(0), sin_addr=inet_addr("127.0.0.1")}, msg_namelen=128->16, msg_iov=[{iov_base="E\0\0T]\10\0\0@\1\37\237\177\0\0\1\177\0\0\1\0\0\306\2413\27\0\2\312\5\332c"..., iov_len=192}], msg_iovlen=1, msg_control=[{cmsg_len=32, cmsg_level=SOL_SOCKET, cmsg_type=SO_TIMESTAMP_OLD, cmsg_data={tv_sec=1675232714, tv_usec=985362}}], msg_controllen=32, msg_flags=0}, 0) = 84
+write(1, "64 bytes from 127.0.0.1: icmp_se"..., 5764 bytes from 127.0.0.1: icmp_seq=2 ttl=64 time=0.126 ms
+) = 57
+recvmsg(3, {msg_namelen=128}, 0)        = -1 EAGAIN (资源暂时不可用)
