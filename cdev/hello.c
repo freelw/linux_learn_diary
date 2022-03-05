@@ -29,6 +29,7 @@ static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, 
 static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos);
 static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig);
 static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
+static int globalmem_open(struct inode *inode, struct file *filp);
 
 static const struct file_operations global_fops = {
     .owner = THIS_MODULE,
@@ -36,6 +37,7 @@ static const struct file_operations global_fops = {
     .write = globalmem_write,
     .llseek = globalmem_llseek,
     .unlocked_ioctl = globalmem_ioctl,
+    .open = globalmem_open,
 };
 
 static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
@@ -73,7 +75,9 @@ fail_malloc:
 }
 
 static void __exit globalmem_exit(void) {
-    
+    cdev_del(&globalmem_devp->cdev);
+    kfree(globalmem_devp);
+    unregister_chrdev_region(MKDEV(globalmem_major, 0), 1);
 }
 
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos) {
@@ -162,6 +166,11 @@ static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long a
     default:
         return -EINVAL;
     }
+    return 0;
+}
+
+static int globalmem_open(struct inode *inode, struct file *filp) {
+    filp->private_data = globalmem_devp;
     return 0;
 }
 
