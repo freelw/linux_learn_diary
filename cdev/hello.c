@@ -5,8 +5,9 @@
 #include <linux/slab.h>
 #include <linux/uaccess.h>
 
+#define GLOBALMEM_MAGIC 'g'
+#define MEM_CLEAR _IO(GLOBALMEM_MAGIC, 0)
 #define GLOBALMEM_SIZE 0x1000
-#define MEM_CLEAR 0x1
 #define GLOBALMEM_MAJOR 230
 
 static int globalmem_major = GLOBALMEM_MAJOR;
@@ -27,13 +28,14 @@ static const struct file_operations globalmem_fops = {
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos);
 static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos);
 static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig);
+static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
 
 static const struct file_operations global_fops = {
     .owner = THIS_MODULE,
     .read = globalmem_read,
     .write = globalmem_write,
     .llseek = globalmem_llseek,
-    
+    .unlocked_ioctl = globalmem_ioctl,
 };
 
 static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
@@ -118,8 +120,7 @@ static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t
 
 static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig) {
     loff_t ret = 0;
-    switch (orig)
-    {
+    switch (orig) {
     case 0:
         if (offset < 0) {
             ret = -EINVAL;
@@ -149,6 +150,19 @@ static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig) {
         break;
     }
     return ret;
+}
+
+static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long arg) {
+    struct globalmem_dev *dev = filp->private_data;
+    switch (cmd) {
+    case MEM_CLEAR:
+        memset(dev->mem, 0, GLOBALMEM_SIZE);
+        printk(KERN_INFO "globalmem is set to zero\n");
+        break;
+    default:
+        return -EINVAL;
+    }
+    return 0;
 }
 
 module_init(globalmem_init);
