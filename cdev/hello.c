@@ -24,6 +24,16 @@ static const struct file_operations globalmem_fops = {
 
 };
 
+static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos);
+static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos);
+
+static const struct file_operations global_fops = {
+    .owner = THIS_MODULE,
+    .read = globalmem_read,
+    .write = globalmem_write,
+    
+};
+
 static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
     int err, devno = MKDEV(globalmem_major, index);
     cdev_init(&dev->cdev, &globalmem_fops);
@@ -62,11 +72,51 @@ static void __exit globalmem_exit(void) {
     
 }
 
+static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos) {
+    unsigned long p = *ppos;
+    unsigned int count = size;
+    int ret = 0;
+    struct globalmem_dev *dev = filp->private_data;
+    if (p >= GLOBALMEM_SIZE) {
+        return 0;
+    }
+    if (count > GLOBALMEM_SIZE - p) {
+        count = GLOBALMEM_SIZE - p;
+    }
+    if (copy_to_user(buf, dev->mem +p, count)) {
+        ret = -EFAULT;
+    } else {
+        *ppos += count;
+        ret = count;
+        printk(KERN_INFO "read %u byte(s) from %lu\n", count, p);
+    }
+    return ret;
+}
+
+static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos) {
+    unsigned long p = *ppos;
+    unsigned int count = size;
+    int ret = 0;
+    struct globalmem_dev *dev = filp->private_data;
+    if (p >= GLOBALMEM_SIZE) {
+        return 0;
+    }
+    if (count > GLOBALMEM_SIZE - p) {
+        count = GLOBALMEM_SIZE - p;
+    }
+    if (copy_from_user(dev->mem + p, buf, count)) {
+        return -EFAULT;
+    } else {
+        *ppos += count; 
+        ret = count;
+        printk(KERN_INFO "written %u byte(s) from %lu\n", count, p);
+    }
+    return ret;
+}
+
 module_init(globalmem_init);
 module_exit(globalmem_exit);
 MODULE_AUTHOR("wangli <826231693@qq.com>");
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("wangli learn cdev demo.");
 MODULE_VERSION("V1.2");
-
-
