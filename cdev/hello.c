@@ -21,17 +21,13 @@ struct globalmem_dev {
 
 struct globalmem_dev *globalmem_devp;
 
-static const struct file_operations globalmem_fops = {
-
-};
-
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos);
 static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos);
 static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig);
 static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long arg);
 static int globalmem_open(struct inode *inode, struct file *filp);
 
-static const struct file_operations global_fops = {
+static const struct file_operations globalmem_fops = {
     .owner = THIS_MODULE,
     .read = globalmem_read,
     .write = globalmem_write,
@@ -51,8 +47,9 @@ static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
 }
 
 static int __init globalmem_init(void) {
-    int ret;
+    int ret = 0;
     dev_t devno = MKDEV(globalmem_major, 0);
+    printk(KERN_INFO "hello wangli.\n");
     if (globalmem_major) {
         ret = register_chrdev_region(devno, 1, "globalmem");
     } else {
@@ -78,6 +75,7 @@ static void __exit globalmem_exit(void) {
     cdev_del(&globalmem_devp->cdev);
     kfree(globalmem_devp);
     unregister_chrdev_region(MKDEV(globalmem_major, 0), 1);
+    printk(KERN_INFO "bye bye wangli.\n");
 }
 
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos) {
@@ -102,8 +100,8 @@ static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, 
 }
 
 static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos) {
-    unsigned long p = *ppos;
-    unsigned int count = size;
+    loff_t p = *ppos;
+    size_t count = size;
     int ret = 0;
     struct globalmem_dev *dev = filp->private_data;
     if (p >= GLOBALMEM_SIZE) {
@@ -112,12 +110,13 @@ static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t
     if (count > GLOBALMEM_SIZE - p) {
         count = GLOBALMEM_SIZE - p;
     }
+    
     if (copy_from_user(dev->mem + p, buf, count)) {
         return -EFAULT;
     } else {
         *ppos += count; 
         ret = count;
-        printk(KERN_INFO "written %u byte(s) from %lu\n", count, p);
+        printk(KERN_INFO "written %lu byte(s) from %llu\n", count, p);
     }
     return ret;
 }
