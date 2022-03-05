@@ -67,6 +67,6 @@ module_exit(globalmem_exit);
 MODULE_AUTHOR("wangli <826231693@qq.com>");
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("wangli learn cdev demo.");
-MODULE_VERSION("V1.1");
+MODULE_VERSION("V1.2");
 
 
