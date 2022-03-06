@@ -9,6 +9,7 @@
 #define MEM_CLEAR _IO(GLOBALMEM_MAGIC, 0)
 #define GLOBALMEM_SIZE 0x1000
 #define GLOBALMEM_MAJOR 230
+#define DEVICE_NUM 10
 
 static int globalmem_major = GLOBALMEM_MAJOR;
 
@@ -48,33 +49,40 @@ static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
 
 static int __init globalmem_init(void) {
     int ret = 0;
+    int i;
     dev_t devno = MKDEV(globalmem_major, 0);
     printk(KERN_INFO "hello wangli.\n");
     if (globalmem_major) {
-        ret = register_chrdev_region(devno, 1, "globalmem");
+        ret = register_chrdev_region(devno, DEVICE_NUM, "globalmem");
     } else {
-        ret = alloc_chrdev_region(&devno, 0, 1, "globalmem");
+        ret = alloc_chrdev_region(&devno, 0, DEVICE_NUM, "globalmem");
         globalmem_major = MAJOR(devno);
     }
     if (ret < 0) {
         return ret;
     }
-    globalmem_devp = kzalloc(sizeof(struct globalmem_dev), GFP_KERNEL);
+    globalmem_devp = kzalloc(sizeof(struct globalmem_dev) * DEVICE_NUM, GFP_KERNEL);
     if (!globalmem_devp) {
         ret = -ENOMEM;
         goto fail_malloc;
     }
-    globalmem_setup_cdev(globalmem_devp, 0);
+    for (i = 0; i < DEVICE_NUM; ++i) {
+        globalmem_setup_cdev(globalmem_devp + i, i);
+    }
     return 0;
 fail_malloc:
-    unregister_chrdev_region(devno, 1);
+    unregister_chrdev_region(devno, DEVICE_NUM);
     return ret;
 }
 
 static void __exit globalmem_exit(void) {
-    cdev_del(&globalmem_devp->cdev);
+    //cdev_del(&globalmem_devp->cdev);
+    int i;
+    for (i = 0; i < DEVICE_NUM; ++i) {
+        cdev_del(&(globalmem_devp+i)->cdev);
+    }
     kfree(globalmem_devp);
-    unregister_chrdev_region(MKDEV(globalmem_major, 0), 1);
+    unregister_chrdev_region(MKDEV(globalmem_major, 0), DEVICE_NUM);
     printk(KERN_INFO "bye bye wangli.\n");
 }
 
@@ -169,7 +177,7 @@ static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long a
 }
 
 static int globalmem_open(struct inode *inode, struct file *filp) {
-    filp->private_data = globalmem_devp;
+    filp->private_data = container_of(inode->i_cdev, struct globalmem_dev, cdev);
     return 0;
 }
 
