@@ -11,11 +11,7 @@
 #include <linux/seq_file.h>
 #include <linux/slab.h>
 
-MODULE_AUTHOR("Jonathan Corbet");
-MODULE_LICENSE("Dual BSD/GPL");
-
-#define KEY_NAME "sequence"
-
+MODULE_AUTHOR("wangli");
 
 struct my_private_data {
     loff_t origin;
