@@ -52,7 +52,8 @@ static struct seq_operations ct_seq_ops = {
     .start = ct_seq_start,
     .next = ct_seq_next,
     .stop = ct_seq_stop,
-    .show = ct_seq_show};
+    .show = ct_seq_show,
+};
 
 /*
  * Time to set up the file operations for our /proc file.  In this case,
@@ -72,7 +73,8 @@ static struct file_operations ct_file_ops = {
     .open = ct_open,
     .read = seq_read,
     .llseek = seq_lseek,
-    .release = seq_release};
+    .release = seq_release,
+};
 
 /*
  * Module setup and teardown.

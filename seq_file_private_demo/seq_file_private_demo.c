@@ -39,7 +39,8 @@ static struct seq_operations ct_seq_ops = {
     .start = ct_seq_start,
     .next = ct_seq_next,
     .stop = ct_seq_stop,
-    .show = ct_seq_show};
+    .show = ct_seq_show,
+};
 
 static int ct_open(struct inode *inode, struct file *file) {
     int ret = 0;
