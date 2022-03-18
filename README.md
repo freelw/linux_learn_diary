@@ -78,18 +78,16 @@
 
 * 20210527 todo
 
-        研究kdump
+    研究kdump
 
-        研究crash工具
+    研究crash工具
 
 * 20220305
-	
-	研究 cdev
+
+    研究 cdev
 
 * 20220318 todo
 
     研究seq_file
 
-* 把.clang-format放到工程中实现自动format
-
-    [.clang-format](https://gitee.com/freelw/linux_learn_diary/blob/master/.clang-format)
+    [把.clang-format放到工程中实现自动format](https://gitee.com/freelw/linux_learn_diary/blob/master/.clang-format)
