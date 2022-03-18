@@ -1,9 +1,3 @@
-/*
- * Simple demonstration of the seq_file interface.
- *
- * $Id: seq.c,v 1.1 2003/02/10 21:02:02 corbet Exp $
- */
-
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/proc_fs.h>
