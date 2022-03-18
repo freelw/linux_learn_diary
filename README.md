@@ -60,7 +60,6 @@
 
 * 20210408 todo
 
-
     [配置linux vscode环境](https://code.visualstudio.com/docs/cpp/config-linux) done
 
 * 20210409 todo
@@ -83,6 +82,10 @@
 
         研究crash工具
 
-* 20220305 to
+* 20220305
 	
 	研究 cdev
+
+* 20220318 todo
+
+    研究seq_file
