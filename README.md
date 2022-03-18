@@ -89,3 +89,7 @@
 * 20220318 todo
 
     研究seq_file
+
+* 把.clang-format放到工程中实现自动format
+
+    
