@@ -1,6 +1,6 @@
-这是一个lwn上关于seq_file的demo
+# 这是一个lwn上关于seq_file的demo
+[seq_file 的介绍在这里](https://www.kernel.org/doc/html/latest/filesystems/seq_file.html)
 [源代码在这里](https://lwn.net/Articles/22359/)
-
 [看这里的修改方法适配5.4内核](https://stackoverflow.com/questions/8516021/proc-create-example-for-kernel-module/8521197#8521197)
 修改了ct_init函数使之能在5.4内核上编译通过
 
