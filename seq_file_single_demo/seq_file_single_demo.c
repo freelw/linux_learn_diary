@@ -15,8 +15,8 @@ struct my_private_data {
 static struct my_private_data d0, d1;
 
 static int ct_seq_show(struct seq_file *s, void *v) {
-    loff_t *spos = (loff_t *)v;
-    seq_printf(s, "%Ld\n", *spos);
+    struct my_private_data *p = s->private;
+    seq_printf(s, "%Ld\n", p->origin);
     return 0;
 }
 
