@@ -62,7 +62,8 @@ static struct file_operations ct_file_ops = {
     .open = ct_open,
     .read = seq_read,
     .llseek = seq_lseek,
-    .release = seq_release};
+    .release = seq_release,
+};
 
 static int ct_init(void) {
     struct proc_dir_entry *entry;
