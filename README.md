@@ -91,3 +91,9 @@
     研究seq_file
 
     [把.clang-format放到工程中实现自动format](https://gitee.com/freelw/linux_learn_diary/blob/master/.clang-format)
+
+    [seq_file_private_demo](https://gitee.com/freelw/linux_learn_diary/tree/master/seq_file_private_demo)
+
+* 20220324 
+
+    [globalmem 并发控制](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev)
