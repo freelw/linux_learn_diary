@@ -1,3 +1,4 @@
+# python 3
 from socketserver import BaseRequestHandler, UDPServer
 import time
 import threading
@@ -35,5 +36,5 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         interval = int(sys.argv[1])
     threading.Thread(target=loop, args=(interval,)).start()
-    serv = UDPServer(('0.0.0.0', 30000), TimeHandler)
+    serv = UDPServer(('0.0.0.0', 30001), TimeHandler)
     serv.serve_forever()
