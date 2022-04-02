@@ -97,3 +97,7 @@
 * 20220324 
 
     [globalmem 并发控制](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev)
+
+* 20220402
+
+    [perf 火焰图学习](https://gitee.com/freelw/linux_learn_diary/tree/master/perf_flame)
