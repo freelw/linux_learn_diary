@@ -1,0 +1,5 @@
+#!/bin/bash 
+
+perf script | /home/ubuntu/FlameGraph/stackcollapse-perf.pl | /home/ubuntu/FlameGraph/flamegraph.pl > process.svg
+echo 'http://152.136.137.213:8080/process.svg'
+python3 -m http.server 8080

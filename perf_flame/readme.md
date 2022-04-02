@@ -10,3 +10,21 @@
     -g 记录调用栈
     -- 表示之后的字符串都是参数而不是options
     A -- signals the end of options and disables further option processing. Any arguments after the -- are treated as filenames and arguments.
+
+* 生成火焰图
+
+    1. git clone https://github.com/brendangregg/FlameGraph.git
+    2. 用 perf script -i <perf.data> 可以解开折叠的数据
+
+        perf script -i <perf.data> &> perf_data.unfold
+        &> 符号可以表标准输出可错误输出都定向到perf_data.unfold中
+
+    3. 用 stackcollapse-perf.pl 将 perf 解析出的内容 perf_data.unfold 中的符号进行折叠
+
+        ./stackcollapse-perf.pl /tmp/perf_data.unfold &> /tmp/perf.folded
+    
+    4. 生成火焰图./flamegraph.pl /tmp/perf_data.folded > /root/perf.svg
+
+* 简化命令
+
+    perf script | /home/ubuntu/FlameGraph/stackcollapse-perf.pl | /home/ubuntu/FlameGraph/flamegraph.pl > process.svg
