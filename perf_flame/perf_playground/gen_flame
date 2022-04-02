@@ -1,6 +1,8 @@
 #!/bin/bash 
 
-perf script | /home/ubuntu/FlameGraph/stackcollapse-perf.pl | /home/ubuntu/FlameGraph/flamegraph.pl > process.svg
-echo 'http://xixibaobei.cc:8080/process.svg'
-echo 'http://152.136.137.213:8080/process.svg'
+DATE=`date "+%Y-%m-%d_%H_%M_%S"`
+FILENAME=process_${DATE}.svg
+perf script | /home/ubuntu/FlameGraph/stackcollapse-perf.pl | /home/ubuntu/FlameGraph/flamegraph.pl > output/${FILENAME}
+echo "http://xixibaobei.cc:8080/output/${FILENAME}"
+echo "http://152.136.137.213:8080/output/${FILENAME}"
 python3 -m http.server 8080
