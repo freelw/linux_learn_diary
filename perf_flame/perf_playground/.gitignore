@@ -1,2 +1,4 @@
 process.svg
 perf.data
+*.data
+svr
