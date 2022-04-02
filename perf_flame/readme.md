@@ -28,3 +28,5 @@
 * 简化命令
 
     perf script | /home/ubuntu/FlameGraph/stackcollapse-perf.pl | /home/ubuntu/FlameGraph/flamegraph.pl > process.svg
+
+    可以使用perf_playground重的脚本简化操作
