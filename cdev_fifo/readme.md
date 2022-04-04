@@ -11,3 +11,5 @@
     cat /dev/globalmem0
 
 ko 加载之后 `/sys/module/hello/` 这里存放了内核模块当前的各种属性
+
+cat /dev/globalmem0 如果没有数据的时候会阻塞住，这时往设备文件中写数据，可以看到cat进程有输出，说明io阻塞逻辑生效了
