@@ -101,3 +101,7 @@
 * 20220402
 
     [perf 火焰图学习](https://gitee.com/freelw/linux_learn_diary/tree/master/perf_flame)
+
+* 20220404
+
+    [cdev 阻塞与非阻塞io学习](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev_fifo)
