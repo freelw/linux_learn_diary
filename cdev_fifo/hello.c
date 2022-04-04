@@ -4,6 +4,7 @@
 #include <linux/cdev.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
+#include <linux/sched/signal.h>
 
 #define GLOBALMEM_MAGIC 'g'
 #define MEM_CLEAR _IO(GLOBALMEM_MAGIC, 0)
@@ -17,8 +18,11 @@ module_param(globalmem_major, int, S_IRUGO);
 
 struct globalmem_dev {
     struct cdev cdev;
+    unsigned int current_len;
     unsigned char mem[GLOBALMEM_SIZE];
     struct mutex mutex;
+    wait_queue_head_t r_wait;
+    wait_queue_head_t w_wait;
 };
 
 struct globalmem_dev *globalmem_devp;
@@ -68,6 +72,7 @@ static int __init globalmem_init(void) {
         ret = -ENOMEM;
         goto fail_malloc;
     }
+
     for (i = 0; i < DEVICE_NUM; ++i) {
         globalmem_setup_cdev(globalmem_devp + i, i);
     }
@@ -87,49 +92,84 @@ static void __exit globalmem_exit(void) {
     printk(KERN_INFO "globalmem_exit.\n");
 }
 
-static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos) {
-    unsigned long p = *ppos;
-    unsigned int count = size;
+static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t count, loff_t *ppos) {
     int ret = 0;
     struct globalmem_dev *dev = filp->private_data;
-    if (p >= GLOBALMEM_SIZE) {
-        return 0;
-    }
-    if (count > GLOBALMEM_SIZE - p) {
-        count = GLOBALMEM_SIZE - p;
-    }
+    DECLARE_WAITQUEUE(wait, current);
     mutex_lock(&dev->mutex);
-    if (copy_to_user(buf, dev->mem + p, count)) {
-        ret = -EFAULT;
-    } else {
-        *ppos += count;
-        ret = count;
-        printk(KERN_INFO "read %u byte(s) from %lu\n", count, p);
+    add_wait_queue(&dev->r_wait, &wait);
+    while (dev->current_len == 0) {
+        if (filp->f_flags & O_NONBLOCK) {
+            ret = -EAGAIN;
+            goto out;
+        }
+        __set_current_state(TASK_INTERRUPTIBLE);
+        mutex_unlock(&dev->mutex);
+        schedule();
+        if (signal_pending(current)) {
+            ret = -ERESTARTSYS;
+            goto out2;
+        }
+        mutex_lock(&dev->mutex);
     }
+    if (count > dev->current_len) {
+        count = dev->current_len;
+    }
+    if (copy_to_user(buf, dev->mem, count)) {
+        ret = -EFAULT;
+        goto out;
+    } else {
+        memcpy(dev->mem, dev->mem + count, dev->current_len - count);
+        dev->current_len -= count;
+        printk(KERN_INFO "read %lu byte(s), current_len: %u\n", count, dev->current_len);
+        wake_up_interruptible(&dev->w_wait);
+        ret = count;
+    }
+out:
     mutex_unlock(&dev->mutex);
+out2:
+    remove_wait_queue(&dev->r_wait, &wait);
+    set_current_state(TASK_RUNNING);
     return ret;
 }
 
-static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos) {
-    loff_t p = *ppos;
-    size_t count = size;
+static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t count, loff_t *ppos) {
     int ret = 0;
     struct globalmem_dev *dev = filp->private_data;
-    if (p >= GLOBALMEM_SIZE) {
-        return 0;
-    }
-    if (count > GLOBALMEM_SIZE - p) {
-        count = GLOBALMEM_SIZE - p;
-    }
+    DECLARE_WAITQUEUE(wait, current);
     mutex_lock(&dev->mutex);
-    if (copy_from_user(dev->mem + p, buf, count)) {
-        return -EFAULT;
-    } else {
-        *ppos += count;
-        ret = count;
-        printk(KERN_INFO "written %lu byte(s) from %llu\n", count, p);
+    add_wait_queue(&dev->w_wait, &wait);
+    while (dev->current_len == GLOBALMEM_SIZE) {
+        if (filp->f_flags & O_NONBLOCK) {
+            ret = -EAGAIN;
+            goto out;
+        }
+        __set_current_state(TASK_INTERRUPTIBLE);
+        mutex_unlock(&dev->mutex);
+        schedule();
+        if (signal_pending(current)) {
+            ret = -ERESTARTSYS;
+            goto out2;
+        }
+        mutex_lock(&dev->mutex);
     }
+    if (count > GLOBALMEM_SIZE - dev->current_len) {
+        count = GLOBALMEM_SIZE - dev->current_len;
+    }
+    if (copy_from_user(dev->mem + dev->current_len, buf, count)) {
+        ret = -EFAULT;
+        goto out;
+    } else {
+        dev->current_len += count;
+        printk(KERN_INFO "written %lu byte(s), current_len: %u\n", count, dev->current_len);
+        wake_up_interruptible(&dev->r_wait);
+        ret = count;
+    }
+out:
     mutex_unlock(&dev->mutex);
+out2:
+    remove_wait_queue(&dev->w_wait, &wait);
+    set_current_state(TASK_RUNNING);
     return ret;
 }
 
