@@ -45,6 +45,8 @@ static const struct file_operations globalmem_fops = {
 static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
     int err, devno = MKDEV(globalmem_major, index);
     mutex_init(&dev->mutex);
+    init_waitqueue_head(&dev->r_wait);
+    init_waitqueue_head(&dev->w_wait);
     cdev_init(&dev->cdev, &globalmem_fops);
     dev->cdev.owner = THIS_MODULE;
     err = cdev_add(&dev->cdev, devno, 1 /*count*/);
