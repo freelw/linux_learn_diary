@@ -13,3 +13,10 @@
 ko 加载之后 `/sys/module/hello/` 这里存放了内核模块当前的各种属性
 
 cat /dev/globalmem0 如果没有数据的时候会阻塞住，这时往设备文件中写数据，可以看到cat进程有输出，说明io阻塞逻辑生效了
+
+测试poll逻辑的方法
+
+    1. 运行select_demo/globalmem_poll 一直打印 'Poll monitor: can be written'
+    2. echo 123 > /dev/globalmem0 交替打印'Poll monitor: can be read Poll monitor: can be written'
+    3. 运行 dd if=/dev/zero of=/dev/globalmem0 一直打印 'Poll monitor: can be read’
+    4. 运行 cat /dev/globalmem0 一直打印 'Poll monitor: can be written'
