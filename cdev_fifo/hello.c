@@ -244,7 +244,7 @@ static unsigned int globalmem_poll(struct file *filp, poll_table *wait) {
         mask |= POLLIN | POLLRDNORM;
     }
     if (dev->current_len != GLOBALMEM_SIZE) {
-        mask | POLLOUT | POLLWRNORM;
+        mask |= POLLOUT | POLLWRNORM;
     }
     mutex_unlock(&dev->mutex);
     return mask;
