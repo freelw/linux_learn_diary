@@ -2,6 +2,9 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <string.h>
 
 int get_ip_addr_from_socket(char *ip_addr) {
     int ret = 0;
@@ -33,8 +36,10 @@ int get_ip_addr_from_socket(char *ip_addr) {
         close(sock);
         return ret;
     }
-    getsockname(sock, (struct sockaddr *)&client, &cLen);
+    ret = getsockname(sock, (struct sockaddr *)&client, &cLen);
+    printf("ret = %d\n", ret);
     strcpy(ip_addr, inet_ntoa(client.sin_addr));
+    printf("%s\n", ip_addr);
     close(sock);
     return ret;
 }
@@ -42,25 +47,5 @@ int get_ip_addr_from_socket(char *ip_addr) {
 int main() {
     char ip_addr[64];
     get_ip_addr_from_socket(ip_addr);
-    /*int sock;
-    char *server_ip = "8.8.8.8";
-    unsigned short server_port = 53;
-    struct sockaddr_in client;
-    struct sockaddr_in server;
-    int ret;
-    char ip_addr[64];
-    memset(&server, 0, sizeof(server));
-    socklen_t cLen = sizeof(client);
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = inet_addr(server_ip);
-    server.sin_port = htons(server_port);
-    sock = socket(PF_INET, SOCK_DGRAM, 0);
-    ret = connect(sock, (struct sockaddr *)&server, sizeof(server));
-    printf("ret = %d\n", ret);
-    ret = getsockname(sock, (struct sockaddr *)&client, &cLen);
-    printf("ret = %d\n", ret);
-    printf("%d\n", inet_ntoa(client.sin_addr));
-    strcpy(ip_addr, inet_ntoa(client.sin_addr));
-    printf("%s\n", ip_addr);*/
     return 0;
 }
