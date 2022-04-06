@@ -105,3 +105,7 @@
 * 20220404
 
     [cdev 阻塞与非阻塞io学习](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev_fifo)
+
+* 20220406
+
+    [cdev aio学习](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev_fifo_aio)
