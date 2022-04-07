@@ -109,3 +109,7 @@
 * 20220406
 
     [cdev aio学习](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev_fifo_aio)
+
+* 20220406
+
+    [使用伪终端消除标准io库在使用管道时的4k buffer问题](https://gitee.com/freelw/linux_learn_diary/tree/master/pty_test)
