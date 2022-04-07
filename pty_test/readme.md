@@ -5,3 +5,5 @@
 3. 在forkpty_demo目录执行`./forkpty_demo ../buffer_demo/buffer_demo | tee a.txt` 会每隔一秒输出一行"123"
 4. 在forkpty_demo目录执行`tail -f a.txt` 会每隔一秒输出一行"123"
 5. 查看环境变量是否能继承`PTY_TEST_ENV=321 ./forkpty_demo ../print_env/print_env | tee a.txt`
+6. `script -c "../buffer_demo/buffer_demo" /dev/null | tee a.txt` 实现类似的功能
+7. `unbuffer  ../buffer_demo/buffer_demo | tee a.txt` 实现类似的功能
