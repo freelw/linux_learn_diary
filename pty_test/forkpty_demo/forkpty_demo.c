@@ -18,7 +18,7 @@ int written(int fd, char *write_buffer, int length) {
 }
 
 void bridge(int fd1, int fd2) {
-    char buf[1500];
+    char buf[1024];
     fd_set fds;
     int fm = max(fd1, fd2) + 1;
     int l = 0;
