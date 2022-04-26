@@ -9,3 +9,15 @@
     切割pcap文件
     editcap -c 10000  路径\src.pcap  路径\dest.pcap
     参数说明：10000是切割后的pcap文件中每个文件中所包含的包的个数，路径\src.pcap是要被切割的pcap文件，路径\dest.pcap指定切割后的pcap文件的路径和文件名，会自动加编号。
+
+    合并pcap文件
+    mergecap -w destfile sourcefile1 sourcefile2 
+
+    使用tcpdump 读取抓包的文件
+    tcpdump -tttr *
+    其中不同的t代表不同的打印时间的格式
+    -t 在每行输出中不打印时间戳
+    -tt 不对每行输出的时间进行格式处理(nt: 这种格式一眼可能看不出其含义, 如时间戳打印成1261798315)
+    -ttt tcpdump 输出时, 每两行打印之间会延迟一个段时间(以毫秒为单位)
+    -tttt 在每行打印的时间戳之前添加日期的打印
+
