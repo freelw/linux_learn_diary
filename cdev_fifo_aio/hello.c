@@ -113,7 +113,7 @@ static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t count,
             ret = -EAGAIN;
             goto out;
         }
-        __set_current_state(TASK_INTERRUPTIBLE);
+        set_current_state(TASK_INTERRUPTIBLE);
         mutex_unlock(&dev->mutex);
         schedule();
         if (signal_pending(current)) {
@@ -154,7 +154,7 @@ static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t
             ret = -EAGAIN;
             goto out;
         }
-        __set_current_state(TASK_INTERRUPTIBLE);
+        set_current_state(TASK_INTERRUPTIBLE);
         mutex_unlock(&dev->mutex);
         schedule();
         if (signal_pending(current)) {

@@ -6,27 +6,21 @@
 #include <linux/uaccess.h>
 #include <linux/sched/signal.h>
 #include <linux/poll.h>
+#include <linux/miscdevice.h>
+#include <linux/platform_device.h>
 
 #define GLOBALMEM_MAGIC 'g'
 #define MEM_CLEAR _IO(GLOBALMEM_MAGIC, 0)
 #define GLOBALMEM_SIZE 0x1000
-#define GLOBALMEM_MAJOR 230
-#define DEVICE_NUM 10
-
-static int globalmem_major = GLOBALMEM_MAJOR;
-
-module_param(globalmem_major, int, S_IRUGO);
 
 struct globalmem_dev {
-    struct cdev cdev;
     unsigned int current_len;
     unsigned char mem[GLOBALMEM_SIZE];
     struct mutex mutex;
     wait_queue_head_t r_wait;
     wait_queue_head_t w_wait;
+    struct miscdevice miscdev;
 };
-
-struct globalmem_dev *globalmem_devp;
 
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t size, loff_t *ppos);
 static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t size, loff_t *ppos);
@@ -45,61 +39,9 @@ static const struct file_operations globalmem_fops = {
     .poll = globalmem_poll,
 };
 
-static void globalmem_setup_cdev(struct globalmem_dev *dev, int index) {
-    int err, devno = MKDEV(globalmem_major, index);
-    mutex_init(&dev->mutex);
-    init_waitqueue_head(&dev->r_wait);
-    init_waitqueue_head(&dev->w_wait);
-    cdev_init(&dev->cdev, &globalmem_fops);
-    dev->cdev.owner = THIS_MODULE;
-    err = cdev_add(&dev->cdev, devno, 1 /*count*/);
-    if (err) {
-        printk(KERN_NOTICE "Error %d adding globalmem%d", err, index);
-    }
-}
-
-static int __init globalmem_init(void) {
-    int ret = 0;
-    int i;
-    dev_t devno = MKDEV(globalmem_major, 0);
-    printk(KERN_INFO "globalmem_init.\n");
-    if (globalmem_major) {
-        ret = register_chrdev_region(devno, DEVICE_NUM, "globalmem");
-    } else {
-        ret = alloc_chrdev_region(&devno, 0, DEVICE_NUM, "globalmem");
-        globalmem_major = MAJOR(devno);
-    }
-    if (ret < 0) {
-        return ret;
-    }
-    globalmem_devp = kzalloc(sizeof(struct globalmem_dev) * DEVICE_NUM, GFP_KERNEL);
-    if (!globalmem_devp) {
-        ret = -ENOMEM;
-        goto fail_malloc;
-    }
-
-    for (i = 0; i < DEVICE_NUM; ++i) {
-        globalmem_setup_cdev(globalmem_devp + i, i);
-    }
-    return 0;
-fail_malloc:
-    unregister_chrdev_region(devno, DEVICE_NUM);
-    return ret;
-}
-
-static void __exit globalmem_exit(void) {
-    int i;
-    for (i = 0; i < DEVICE_NUM; ++i) {
-        cdev_del(&(globalmem_devp + i)->cdev);
-    }
-    kfree(globalmem_devp);
-    unregister_chrdev_region(MKDEV(globalmem_major, 0), DEVICE_NUM);
-    printk(KERN_INFO "globalmem_exit.\n");
-}
-
 static ssize_t globalmem_read(struct file *filp, char __user *buf, size_t count, loff_t *ppos) {
     int ret = 0;
-    struct globalmem_dev *dev = filp->private_data;
+    struct globalmem_dev *dev = container_of(filp->private_data, struct globalmem_dev, miscdev);
     DECLARE_WAITQUEUE(wait, current);
     mutex_lock(&dev->mutex);
     add_wait_queue(&dev->r_wait, &wait);
@@ -140,7 +82,7 @@ out2:
 
 static ssize_t globalmem_write(struct file *filp, const char __user *buf, size_t count, loff_t *ppos) {
     int ret = 0;
-    struct globalmem_dev *dev = filp->private_data;
+    struct globalmem_dev *dev = container_of(filp->private_data, struct globalmem_dev, miscdev);
     DECLARE_WAITQUEUE(wait, current);
     mutex_lock(&dev->mutex);
     add_wait_queue(&dev->w_wait, &wait);
@@ -213,7 +155,7 @@ static loff_t globalmem_llseek(struct file *filp, loff_t offset, int orig) {
 }
 
 static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long arg) {
-    struct globalmem_dev *dev = filp->private_data;
+    struct globalmem_dev *dev = container_of(filp->private_data, struct globalmem_dev, miscdev);
     switch (cmd) {
     case MEM_CLEAR:
         mutex_lock(&dev->mutex);
@@ -228,13 +170,15 @@ static long globalmem_ioctl(struct file *filp, unsigned int cmd, unsigned long a
 }
 
 static int globalmem_open(struct inode *inode, struct file *filp) {
-    filp->private_data = container_of(inode->i_cdev, struct globalmem_dev, cdev);
+    struct miscdevice *miscdev = filp->private_data;
+    struct device *this_device = miscdev->this_device;
+    dev_info(this_device, "dev open.\n");
     return 0;
 }
 
 static unsigned int globalmem_poll(struct file *filp, poll_table *wait) {
     unsigned int mask = 0;
-    struct globalmem_dev *dev = filp->private_data;
+    struct globalmem_dev *dev = container_of(filp->private_data, struct globalmem_dev, miscdev);
 
     mutex_lock(&dev->mutex);
     poll_wait(filp, &dev->r_wait, wait);
@@ -250,16 +194,49 @@ static unsigned int globalmem_poll(struct file *filp, poll_table *wait) {
     return mask;
 }
 
-module_init(globalmem_init);
-module_exit(globalmem_exit);
+static int globalmem_probe(struct platform_device *pdev) {
+    struct globalmem_dev *gl;
+    int ret;
+    gl = devm_kzalloc(&pdev->dev, sizeof(*gl), GFP_KERNEL); // gfp is short for get free page
+    if (!gl) {
+        return -ENOMEM;
+    }
+    gl->miscdev.minor = MISC_DYNAMIC_MINOR;
+    gl->miscdev.name = "globalmem_dev";
+    gl->miscdev.fops = &globalmem_fops;
+    mutex_init(&gl->mutex);
+    init_waitqueue_head(&gl->r_wait);
+    init_waitqueue_head(&gl->w_wait);
+    platform_set_drvdata(pdev, gl);
+    ret = misc_register(&gl->miscdev);
+    if (ret < 0) {
+        goto err;
+    }
+    dev_info(&pdev->dev, "globalmem_probe.\n");
+    return 0;
+err:
+    return ret;
+}
+
+static int globalmem_remove(struct platform_device *pdev) {
+    struct globalmem_dev *gl = platform_get_drvdata(pdev);
+    misc_deregister(&gl->miscdev);
+    dev_info(&pdev->dev, "globalmem_remove.\n");
+    return 0;
+}
+
+static struct platform_driver globalmem_driver = {
+    .driver = {
+        .name = "globalmem_misc",
+        .owner = THIS_MODULE,
+    },
+    .probe = globalmem_probe,
+    .remove = globalmem_remove,
+};
+
+module_platform_driver(globalmem_driver);
+
 MODULE_AUTHOR("wangli <826231693@qq.com>");
 MODULE_LICENSE("GPL v2");
-MODULE_DESCRIPTION("wangli learn cdev demo.");
-MODULE_VERSION("V1.2");
-
-/*
-    sudo mknod /dev/globalmem0 c 230 0
-    sudo mknod /dev/globalmem1 c 230 1
-    sudo mknod /dev/globalmem9 c 230 9
-    sudo mknod /dev/globalmem10 c 230 10
-*/
+MODULE_DESCRIPTION("wangli learn platform misc dev demo.");
+MODULE_VERSION("V1.3");
