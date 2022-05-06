@@ -14,6 +14,7 @@ static int __init globalmemdev_init(void) {
         platform_device_put(globalmem_pdev);
         return ret;
     }
+    printk(KERN_INFO "dev init.\n");
     return 0;
 }
 
@@ -21,6 +22,7 @@ module_init(globalmemdev_init);
 
 static void __exit globalmemdev_exit(void) {
     platform_device_unregister(globalmem_pdev);
+    printk(KERN_INFO "dev exit.\n");
 }
 
 module_exit(globalmemdev_exit);
