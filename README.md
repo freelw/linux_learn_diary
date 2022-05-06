@@ -123,3 +123,7 @@
     [scf demo](https://gitee.com/freelw/linux_learn_diary/tree/master/scf)
 
     [shell garp](https://gitee.com/freelw/linux_learn_diary/tree/master/shell_garp)
+
+* 20220507
+
+    [platform miscdevice 学习](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev_fifo_platform_misc)
