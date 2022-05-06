@@ -1,5 +1,5 @@
 KVERS = $(shell uname -r)
-obj-m += driver.o
+obj-m += driver.o dev.o
 
 build: kernel_modules
 

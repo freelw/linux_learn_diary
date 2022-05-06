@@ -238,5 +238,5 @@ module_platform_driver(globalmem_driver);
 
 MODULE_AUTHOR("wangli <826231693@qq.com>");
 MODULE_LICENSE("GPL v2");
-MODULE_DESCRIPTION("wangli learn platform misc dev demo.");
+MODULE_DESCRIPTION("wangli learn platform misc driver demo.");
 MODULE_VERSION("V1.3");
