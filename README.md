@@ -127,3 +127,6 @@
 * 20220507
 
     [platform miscdevice 学习](https://gitee.com/freelw/linux_learn_diary/tree/master/cdev_fifo_platform_misc)
+
+    驱动实验环境
+    Linux VM-0-13-ubuntu 5.4.0-90-generic #101-Ubuntu SMP Fri Oct 15 20:00:55 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
