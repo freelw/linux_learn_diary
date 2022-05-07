@@ -10,6 +10,10 @@
     editcap -c 10000  路径\src.pcap  路径\dest.pcap
     参数说明：10000是切割后的pcap文件中每个文件中所包含的包的个数，路径\src.pcap是要被切割的pcap文件，路径\dest.pcap指定切割后的pcap文件的路径和文件名，会自动加编号。
 
+    按照时间切割
+
+    ./editcap -A ' 2022-05-07 11:47:48' -B '2022-05-07 11:47:49' 2022_0507_1145_07.pcap9 out.pcap
+
     合并pcap文件
     mergecap -w destfile sourcefile1 sourcefile2 
 
