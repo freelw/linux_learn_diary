@@ -134,3 +134,7 @@
 * 20220511
 
     [mac打开多个wireshark窗口](https://gitee.com/freelw/linux_learn_diary/tree/master/mac_multi_wireshark_window)
+
+* 20220601
+
+    [一个wireshark 过滤mysql参数的过滤器](https://gitee.com/freelw/linux_learn_diary/tree/master/wireshark_mysql)
