@@ -138,3 +138,7 @@
 * 20220601
 
     [一个wireshark 过滤mysql参数的过滤器](https://gitee.com/freelw/linux_learn_diary/tree/master/wireshark_mysql)
+
+* 20220601
+
+    [wireshark 过滤出子机没有dns响应的query](https://gitee.com/freelw/linux_learn_diary/tree/master/wireshark_dns)
