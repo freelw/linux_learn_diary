@@ -2,7 +2,7 @@
 
 ## 准备
 
-![glfw](https://www.glfw.org/)
+[glfw](https://www.glfw.org/)
 
 ## 系统
 
@@ -15,7 +15,7 @@
 
 ## demo
 
-![demo](https://www.glfw.org/documentation.html)
+[demo](https://www.glfw.org/documentation.html)
 
 ## mac端端准备
 
