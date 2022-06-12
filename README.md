@@ -142,3 +142,7 @@
 * 20220607
 
     [wireshark 过滤出子机没有dns响应的query](https://gitee.com/freelw/linux_learn_diary/tree/master/wireshark_dns)
+
+* 20220612
+
+    [在服务器运行opengl程序，在客户端渲染](https://gitee.com/freelw/linux_learn_diary/tree/master/opengl_xforwarding)
