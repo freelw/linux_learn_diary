@@ -46,3 +46,4 @@
         ssh -X xxx@ip
 
         这样就带开了一个glx协议传输通道，在当前终端执行./demo，就会在mac端打开窗口
+![效果](https://gitee.com/freelw/linux_learn_diary/raw/master/img/glxfwd.png)
