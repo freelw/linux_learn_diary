@@ -28,8 +28,8 @@ int main(void) {
         return -1;
     }
     fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
+    std::cout << glGetString(GL_VERSION) << std::endl;
 
-    std::cout << "1" << std::endl;
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         // std::cout << "2" << std::endl;
