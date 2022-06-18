@@ -91,6 +91,8 @@
     研究seq_file
 
     [把.clang-format放到工程中实现自动format](https://gitee.com/freelw/linux_learn_diary/blob/master/.clang-format)
+    
+    [使用方法](https://zhuanlan.zhihu.com/p/356143396)
 
     [seq_file_private_demo](https://gitee.com/freelw/linux_learn_diary/tree/master/seq_file_private_demo)
 
