@@ -4,6 +4,45 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <execinfo.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+#define MAX_DEPTH 20
+
+#define ASSERT(x)          \
+    if ((!x)) {            \
+        print_stack();     \
+        sleep(1000000000); \
+    };
+
+#define GLCall(x)   \
+    GLClearError(); \
+    x;              \
+    ASSERT(GLLogCall())
+
+static void print_stack() {
+    void *buffer[MAX_DEPTH];
+    int depth = backtrace(buffer, MAX_DEPTH);
+    char **func_names = backtrace_symbols(buffer, depth);
+    for (int i = 0; i < depth; i++) {
+        printf("Depth: %d, func name: %s\n", i, func_names[i]);
+    }
+}
+
+static void GLClearError() {
+    while (glGetError() != GL_NO_ERROR)
+        ;
+}
+
+static bool GLLogCall() {
+    while (GLenum error = glGetError()) {
+        std::cout << "[OpenGL Error (" << error << ")" << std::endl;
+        return false;
+    }
+    return true;
+}
 
 struct ShaderProgramSource {
     std::string VertexSouce;
@@ -148,7 +187,7 @@ int main(void) {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
