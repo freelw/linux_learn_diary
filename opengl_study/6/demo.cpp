@@ -12,7 +12,7 @@
 #define MAX_DEPTH 20
 
 #define ASSERT(x)          \
-    if ((!x)) {            \
+    if (!(x)) {            \
         print_stack();     \
         sleep(1000000000); \
     };
@@ -133,6 +133,8 @@ int main(void) {
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+    glfwSwapInterval(1);
+
     GLenum err = glewInit();
     if (GLEW_OK != err) {
         /* Problem: glewInit failed, something is seriously wrong. */
@@ -181,14 +183,26 @@ int main(void) {
     unsigned int shader = CreateShader(source.VertexSouce, source.FragmentSource);
     glUseProgram(shader);
 
+    GLCall(int location = glGetUniformLocation(shader, "u_Color"));
+    ASSERT(location != -1);
+    GLCall(glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f));
+
+    float r = 0.0f;
+    float increment = 0.05f;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window)) {
         // std::cout << "2" << std::endl;
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+        GLCall(glUniform4f(location, r, 0.3f, 0.8f, 1.0f));
 
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
 
+        if (r > 1.0f || r < 0.0f) {
+            increment = -increment;
+        }
+        r += increment;
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
 

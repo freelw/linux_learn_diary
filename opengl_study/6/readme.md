@@ -13,3 +13,5 @@
         0x0000000000008a3b
         main
         /home/wangli/project/linux_learn_diary/opengl_study/6/demo.cpp:190 (discriminator 5)
+
+# uniform
