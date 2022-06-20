@@ -148,3 +148,7 @@
 * 20220612
 
     [在服务器运行opengl程序，在客户端渲染](https://gitee.com/freelw/linux_learn_diary/tree/master/opengl_xforwarding)
+
+* 20220620
+
+    [dpdk 学习](https://gitee.com/freelw/linux_learn_diary/tree/master/dpdk_study)
