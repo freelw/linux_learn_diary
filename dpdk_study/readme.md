@@ -51,3 +51,38 @@
     Network devices using kernel driver
     ===================================
     0000:07:00.0 'RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller 8168' if=enp7s0 drv=r8169 unused=vfio-pci *Active*
+
+## 确认是否使用vfio
+
+    lspci -nnv | grep "Kernel driver in use"
+
+    02:00.0 Ethernet controller [0200]: Realtek Semiconductor Co., Ltd. RTL8111/8168/8411 PCI Express Gigabit Ethernet Controller [10ec:8161] (rev 15)
+    Subsystem: Realtek Semiconductor Co., Ltd. TP-Link TG-3468 v4.0 Gigabit PCI Express Network Adapter [10ec:8168]
+    Flags: fast devsel, IRQ 36, IOMMU group 16
+    I/O ports at e000 [size=256]
+    Memory at fb304000 (64-bit, non-prefetchable) [size=4K]
+    Memory at fb300000 (64-bit, non-prefetchable) [size=16K]
+    Capabilities: <access denied>
+    Kernel driver in use: vfio-pci
+    Kernel modules: r8169
+
+## 配置hugepage
+
+    sudo su
+    echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+
+## 测试helloworld
+
+    cd /home/wangli/dpdk_learn/dpdk-22.03/examples/helloworld/build
+    wangli@wangli-desktop:~/dpdk_learn/dpdk-22.03/examples/helloworld/build$ sudo ./helloworld -l 0-3 -n 4
+    EAL: Detected CPU lcores: 20
+    EAL: Detected NUMA nodes: 1
+    EAL: Detected shared linkage of DPDK
+    EAL: Multi-process socket /var/run/dpdk/rte/mp_socket
+    EAL: Selected IOVA mode 'VA'
+    EAL: VFIO support initialized
+    TELEMETRY: No legacy callbacks, legacy socket not created
+    hello from core 1
+    hello from core 2
+    hello from core 3
+    hello from core 0
