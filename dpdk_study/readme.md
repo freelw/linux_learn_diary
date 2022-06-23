@@ -86,3 +86,13 @@
     hello from core 2
     hello from core 3
     hello from core 0
+
+## 安装 libpcap-dev 使用纯软件的pmd
+
+[why](https://stackoverflow.com/questions/71657277/nic-is-unavailable-in-dpdk-application)
+
+[hwoto](https://doc.dpdk.org/guides/nics/pcap_ring.html)
+
+    The main reason why DPDK ports are not identified in your environment is because the NIC in use is not having a supported vendor Poll Mode Driver. Please refer to list of supported NIC from various vendor Realtek is not among them.
+
+    sudo apt-get install libpcap-dev
