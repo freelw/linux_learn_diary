@@ -96,3 +96,4 @@
     The main reason why DPDK ports are not identified in your environment is because the NIC in use is not having a supported vendor Poll Mode Driver. Please refer to list of supported NIC from various vendor Realtek is not among them.
 
     sudo apt-get install libpcap-dev
+[dpdk rte_eth_dev_count_avail()返回0 问题解决记录](http://t.csdn.cn/ybNeV)
