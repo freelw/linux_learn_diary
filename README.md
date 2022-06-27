@@ -156,3 +156,9 @@
     [icmp 没有reply的过滤器](https://gitee.com/freelw/linux_learn_diary/tree/master/wireshark_icmp)
 
     [meson 学习](https://gitee.com/freelw/linux_learn_diary/tree/master/meson_study)
+
+* 20220627
+
+    [tracepoint 学习](https://blog.csdn.net/rikeyone/article/details/116057261) doing
+
+    [droptrace 学习](https://github.com/OpenCloudOS/nettrace/tree/future/droptrace) doing
