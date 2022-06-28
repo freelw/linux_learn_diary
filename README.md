@@ -162,3 +162,6 @@
     [tracepoint 学习](https://blog.csdn.net/rikeyone/article/details/116057261) doing
 
     [droptrace 学习](https://github.com/OpenCloudOS/nettrace/tree/future/droptrace) doing
+* 20220628
+
+    [ubuntu解压vmlinuz方法](https://gitee.com/freelw/linux_learn_diary/tree/master/ubuntu_vmlinux)
