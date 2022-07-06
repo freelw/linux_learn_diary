@@ -162,6 +162,11 @@
     [tracepoint 学习](https://blog.csdn.net/rikeyone/article/details/116057261) doing
 
     [droptrace 学习](https://github.com/OpenCloudOS/nettrace/tree/future/droptrace) doing
+
 * 20220628
 
     [ubuntu解压vmlinuz方法](https://gitee.com/freelw/linux_learn_diary/tree/master/ubuntu_vmlinux)
+
+* 20220706
+
+    [腾讯云创建辅助网卡实现源进源出](https://blog.csdn.net/LiWang112358/article/details/125647202?spm=1001.2014.3001.5502)
