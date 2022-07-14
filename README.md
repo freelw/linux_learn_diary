@@ -170,3 +170,7 @@
 * 20220706
 
     [腾讯云创建辅助网卡实现源进源出](https://blog.csdn.net/LiWang112358/article/details/125647202?spm=1001.2014.3001.5502)
+
+* 20220714
+
+    [tencent os 源码学习环境搭建](https://gitee.com/freelw/linux_learn_diary/tree/master/linux_kernel_env)
