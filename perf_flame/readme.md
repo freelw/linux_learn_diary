@@ -25,3 +25,9 @@
 
         perf script | /home/ubuntu/FlameGraph/stackcollapse-perf.pl | /home/ubuntu/FlameGraph/flamegraph.pl > process.svg
         可以使用perf_playground重的脚本简化操作
+
+* 检测丢包
+
+        下面用perf监控丢弃的数据包，使用 perf 监视 kfree_skb 事件：
+        sudo perf record -g -a -e skb:kfree_skb
+        sudo perf script
