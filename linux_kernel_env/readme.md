@@ -42,6 +42,7 @@
 ## 参考文献
 
 [使用VSCode进行linux内核代码阅读和开发](https://blog.csdn.net/xhnmdlfl/article/details/117911630)
+
 [Centos7 打造 C/C++ 开发环境](https://blog.csdn.net/wcjlyj/article/details/122844189)
     
     
