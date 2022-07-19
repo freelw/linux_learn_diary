@@ -174,3 +174,7 @@
 * 20220714
 
     [tencent os 源码学习环境搭建](https://gitee.com/freelw/linux_learn_diary/tree/master/linux_kernel_env)
+
+* 20220719
+
+    [numactl 内存速率测试](https://gitee.com/freelw/linux_learn_diary/tree/master/numactl)
