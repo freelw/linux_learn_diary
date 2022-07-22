@@ -31,3 +31,10 @@
         下面用perf监控丢弃的数据包，使用 perf 监视 kfree_skb 事件：
         sudo perf record -g -a -e skb:kfree_skb
         sudo perf script
+
+* ping响应耗时高，检测ksoftirqd调度延时
+
+        sudo perf sched record # 记录调度数据
+        [root@VM-0-13-centos perf_test]# sudo perf sched latency -p --sort max | grep soft
+        ksoftirqd/1:16        |      0.016 ms |        3 | avg:    0.002 ms | max:    0.002 ms | max at: 769052.619357 s
+        ksoftirqd/0:9         |      0.024 ms |        2 | avg:    0.001 ms | max:    0.002 ms | max at: 769056.226342 s
