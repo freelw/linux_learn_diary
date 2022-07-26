@@ -178,3 +178,10 @@
 * 20220719
 
     [numactl 内存速率测试](https://gitee.com/freelw/linux_learn_diary/tree/master/numactl)
+
+* 20220726
+
+    todo:
+    
+    [tracepoint](https://blog.csdn.net/u012849539/article/details/106771143)
+    [lwn tracepoint](https://lwn.net/Articles/379903/)
