@@ -38,3 +38,5 @@
         [root@VM-0-13-centos perf_test]# sudo perf sched latency -p --sort max | grep soft
         ksoftirqd/1:16        |      0.016 ms |        3 | avg:    0.002 ms | max:    0.002 ms | max at: 769052.619357 s
         ksoftirqd/0:9         |      0.024 ms |        2 | avg:    0.001 ms | max:    0.002 ms | max at: 769056.226342 s
+
+        perf_sched.sh 可以完成采集工作
