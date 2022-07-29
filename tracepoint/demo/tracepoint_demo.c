@@ -6,7 +6,7 @@
 #include "tracepoint_demo.h"
 
 static int wangli_thread(void *arg) {
-    static unsigned long count;
+    static int count = 0;
     while (!kthread_should_stop()) {
         set_current_state(TASK_INTERRUPTIBLE);
         schedule_timeout(HZ);

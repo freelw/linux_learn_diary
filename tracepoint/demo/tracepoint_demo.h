@@ -11,14 +11,12 @@ TRACE_EVENT(
     TP_PROTO(int num),
     TP_ARGS(num),
     TP_STRUCT__entry(
-        __field(int, output)
         __field(int, count)
     ),
     TP_fast_assign(
-        __entry->count++;
-        __entry->output = num;
+        __entry->count = num;
     ),
-    TP_printk("count=%d output=%d", __entry->count, __entry->output)
+    TP_printk("count=%d", __entry->count)
 );
 #endif
 
