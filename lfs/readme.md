@@ -70,3 +70,11 @@ An easy way to download all of the packages and patches is by using wget-list as
 
 [wget-list](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/wget-list)
 [wget-list-LFS7.7-systemd-USTC](https://linux.cn/lfs/LFS-BOOK-7.7-systemd/wget-list-LFS7.7-systemd-USTC)
+
+使用md5检查包
+
+    pushd $LFS/sources
+    md5sum -c md5sums
+    popd
+
+[md5sums](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/md5sums)
