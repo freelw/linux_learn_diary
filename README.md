@@ -192,3 +192,14 @@
 * 20220729
 
     [tracepoint_demo](https://gitee.com/freelw/linux_learn_diary/tree/master/tracepoint/demo)
+
+* 20220803
+    
+    [linux from scratch 流水账](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs)
+
+    完成11.1版本的包迁移到腾讯云cos上
+
+* 20220803
+
+    [使用autossh 长期保持反向连接](https://gitee.com/freelw/linux_learn_diary/tree/master/autossh)
+
