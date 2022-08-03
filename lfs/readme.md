@@ -9,6 +9,11 @@
 [检查host软件环境](https://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html)
 [version-check.sh](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/version-check.sh)
 
+## 配置$LFS环境变量
+
+    export LFS=/mnt/lfs
+    注意，一定要在切换用户之后都检查一下$LFS变量是否正确，可以放在.bashrc中
+
 ## wget-list
 An easy way to download all of the packages and patches is by using wget-list as an input to wget. For example:
 
