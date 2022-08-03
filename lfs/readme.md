@@ -67,7 +67,7 @@ An easy way to download all of the packages and patches is by using wget-list as
 
     wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/wget-list-9.0-tencent-cos
     wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/md5sums --directory-prefix=$LFS/sources
-    wget --input-file=wget-list-9.0 --continue --directory-prefix=$LFS/sources
+    wget --input-file=wget-list-9.0-tencent-cos --continue --directory-prefix=$LFS/sources
     pushd $LFS/sources
     md5sum -c md5sums
     popd
