@@ -65,20 +65,13 @@
 ## wget-list
 An easy way to download all of the packages and patches is by using wget-list as an input to wget. For example:
 
-    wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/wget-list-9.0
+    wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/wget-list-9.0-tencent-cos
     wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/md5sums --directory-prefix=$LFS/sources
     wget --input-file=wget-list-9.0 --continue --directory-prefix=$LFS/sources
-
-[wget-list](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/wget-list)
-
-[wget-list-9.0](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/wget-list-9.0)
-
-[wget-list-LFS7.7-systemd-USTC](https://linux.cn/lfs/LFS-BOOK-7.7-systemd/wget-list-LFS7.7-systemd-USTC)
-
-使用md5检查包
-
     pushd $LFS/sources
     md5sum -c md5sums
     popd
+
+[wget-list-9.0](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/wget-list-9.0)
 
 [md5sums](https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/md5sums)
