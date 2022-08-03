@@ -61,3 +61,10 @@
     EOF
 
     bash version-check.sh
+
+## wget-list
+An easy way to download all of the packages and patches is by using wget-list as an input to wget. For example:
+
+    wget --input-file=wget-list --continue --directory-prefix=$LFS/sources
+
+[wget-list](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/wget-list)
