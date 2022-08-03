@@ -65,13 +65,13 @@
 ## wget-list
 An easy way to download all of the packages and patches is by using wget-list as an input to wget. For example:
 
-    wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/wget-list-9.0-tencent-cos
-    wget https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/md5sums --directory-prefix=$LFS/sources
+    wget https://lfs-1252366230.cos.ap-beijing.myqcloud.com/wget-list-9.0-tencent-cos
+    wget https://lfs-1252366230.cos.ap-beijing.myqcloud.com/md5sums --directory-prefix=$LFS/sources
     wget --input-file=wget-list-9.0-tencent-cos --continue --directory-prefix=$LFS/sources
     pushd $LFS/sources
     md5sum -c md5sums
     popd
 
-[wget-list-9.0-tencent-cos](https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/wget-list-9.0-tencent-cos)
+[wget-list-9.0-tencent-cos](https://lfs-1252366230.cos.ap-beijing.myqcloud.com/wget-list-9.0-tencent-cos)
 
-[md5sums](https://gitee.com/freelw/linux_learn_diary/raw/master/lfs/md5sums)
+[md5sums](https://lfs-1252366230.cos.ap-beijing.myqcloud.com/md5sums)
