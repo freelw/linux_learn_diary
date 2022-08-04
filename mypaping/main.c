@@ -5,6 +5,23 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <fcntl.h>
+
+void setnonblocking(int sock)
+{
+     int opts;
+     opts=fcntl(sock,F_GETFL);
+     if(opts<0)
+     {
+          perror("fcntl(sock,GETFL)");
+     }
+     opts = opts|O_NONBLOCK;
+     if(fcntl(sock,F_SETFL,opts)<0)
+     {
+          perror("fcntl(sock,SETFL,opts)");
+     }  
+}
+
 
 int paping() {
     int ret = 0;
@@ -17,14 +34,15 @@ int paping() {
     struct timeval tv;
     int result;
     socklen_t cLen = sizeof(client);
-    sock = socket(PF_INET, SOCK_DGRAM, 0);
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    setnonblocking(sock);
     memset(&server, 0, sizeof(server));
     server.sin_family = AF_INET;
     server.sin_addr.s_addr = inet_addr(server_ip);
     server.sin_port = htons(server_port);   
     connect(sock, (struct sockaddr *)&server, sizeof(server));
     tv.tv_sec 	= 0;
-	tv.tv_usec	= 1 * 1000;
+	tv.tv_usec	= 1000 * 1000;
 	FD_ZERO(&read);
 	FD_ZERO(&write);
 	FD_SET(sock, &read);
@@ -38,7 +56,7 @@ int paping() {
         printf("succ\n");
     }
     close(sock);
-    return 0;
+    return ret;
 }
 
 int main() {
