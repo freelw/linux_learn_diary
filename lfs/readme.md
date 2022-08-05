@@ -27,3 +27,9 @@ An easy way to download all of the packages and patches is by using wget-list as
 [wget-list-9.0-tencent-cos](https://lfs-11-1-1259536604.cos.ap-beijing.myqcloud.com/wget-list-11.1-tencent-cos)
 
 [md5sums](https://lfs-11-1-1259536604.cos.ap-beijing.myqcloud.com/md5sums)
+
+## my SDU
+
+    real	5m43.543s
+    user	4m37.622s
+    sys	1m6.622s
