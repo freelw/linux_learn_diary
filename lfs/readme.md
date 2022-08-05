@@ -32,4 +32,4 @@ An easy way to download all of the packages and patches is by using wget-list as
 
     real	5m43.543s
     user	4m37.622s
-    sys	1m6.622s
+    sys	    1m6.622s
