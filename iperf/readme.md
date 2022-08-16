@@ -11,3 +11,7 @@
 
     看runq长度 和load avg
     sar -q 1
+
+# iperf3 压测结果分析脚本
+
+    work.py
