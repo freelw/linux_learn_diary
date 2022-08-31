@@ -33,3 +33,13 @@ An easy way to download all of the packages and patches is by using wget-list as
     real	5m43.543s
     user	4m37.622s
     sys	    1m6.622s
+
+## 关于openssl
+
+    使用openssl-3.0.5.tar.gz 替代了 3.0.1
+    openssl-3.0.5.tar.gz
+    https://lfs-11-1-1259536604.cos.ap-beijing.myqcloud.com/openssl-3.0.5.tar.gz
+
+## 切换chroot
+
+    可以使用 enter_chroot.sh
