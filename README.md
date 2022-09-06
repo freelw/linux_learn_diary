@@ -203,3 +203,8 @@
 
     [使用autossh 长期保持反向连接](https://gitee.com/freelw/linux_learn_diary/tree/master/autossh)
 
+* 20220906
+
+    好文章
+    [TCP 半连接队列和全连接队列满了会发生什么？又该如何应对？](https://www.cnblogs.com/xiaolincoding/p/12995358.html)
+
