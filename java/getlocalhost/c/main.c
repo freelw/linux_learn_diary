@@ -13,6 +13,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <arpa/inet.h>
 
 int main(int argc, char *argv[]) {
 
@@ -20,10 +21,11 @@ int main(int argc, char *argv[]) {
         printf("arg err\n");
         return -1;
     }
-    struct addrinfo hints, *res = NULL, *resNew = NULL, *last = NULL,
+    struct addrinfo hints, *rp = NULL, *result = NULL, *resNew = NULL, *last = NULL,
         *iterator;
 
     int error;
+    char str[INET_ADDRSTRLEN] = {0};
   
 
     // try once, with our static buffer
@@ -31,6 +33,17 @@ int main(int argc, char *argv[]) {
     hints.ai_flags = AI_CANONNAME;
     hints.ai_family = AF_INET;
 
-    error = getaddrinfo("hostname", NULL, &hints, &res);
+    for (int i = 0; i < 1; i ++ )
+        error = getaddrinfo(argv[1], NULL, &hints, &result);
+        printf("error %d\n", error);
+        if (error == 0) {
+        for (rp = result; rp != NULL; rp = rp->ai_next) {
+
+            printf("%d %d %d\n", rp->ai_family, rp->ai_socktype,rp->ai_protocol);
+            inet_ntop(AF_INET, &((struct sockaddr_in *)(rp->ai_addr))->sin_addr.s_addr, str, INET_ADDRSTRLEN);
+            printf("ip %s\n", str);
+        
+        }
+    }
     return 0;
 }
