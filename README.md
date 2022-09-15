@@ -208,3 +208,7 @@
     好文章
     [TCP 半连接队列和全连接队列满了会发生什么？又该如何应对？](https://www.cnblogs.com/xiaolincoding/p/12995358.html)
 
+* 20220915
+
+    linux 监控文件 inotify_add_watch
+
