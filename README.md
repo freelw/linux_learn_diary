@@ -212,3 +212,6 @@
 
     linux 监控文件 inotify_add_watch
 
+* 20220920
+
+    [批量将xps_cpus 绑定队列](https://gitee.com/freelw/linux_learn_diary/tree/master/xps_cmd_gen)
