@@ -3,6 +3,7 @@
 [sys下添加文件](https://blog.csdn.net/larry233/article/details/88094004)
 [kobject](https://blog.csdn.net/jasonchen_gbd/article/details/78013643)
 [发包流程图](https://openwrt.org/docs/guide-developer/networking/praxis)
+[TC(Traffic Control)命令—linux自带高级流控](https://cloud.tencent.com/developer/article/1409664)
 
 ## 研究目标
 
@@ -37,4 +38,4 @@
     rc = __dev_xmit_skb(skb, q, dev, txq);
 
 
-    从__dev_xmit_skb送出
+    从__dev_xmit_skb送出，接下来走qdisc相关逻辑
