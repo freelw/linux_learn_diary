@@ -2,7 +2,7 @@
 
 [sys下添加文件](https://blog.csdn.net/larry233/article/details/88094004)
 [kobject](https://blog.csdn.net/jasonchen_gbd/article/details/78013643)
-
+[发包流程图](https://openwrt.org/docs/guide-developer/networking/praxis)
 
 ## 研究目标
 
