@@ -4,7 +4,7 @@
 [kobject](https://blog.csdn.net/jasonchen_gbd/article/details/78013643)
 [发包流程图](https://openwrt.org/docs/guide-developer/networking/praxis)
 [TC(Traffic Control)命令—linux自带高级流控](https://cloud.tencent.com/developer/article/1409664)
-
+[uprobe](https://lwn.net/Articles/499190/)
 ## 研究目标
 
     /sys/class/net/eth0/queues/tx-%d/xps_cpus 的行为
