@@ -70,3 +70,5 @@ uprobe 通过inode就可以知道二进制文件具体加载在进程地址空�
     针对增量hook
         在uprobe_mmap中install_breakpoint
         uprobe_mmap 在各种创建vma的位置被调用，也就是说新加载的vma，都要过一下有没有uprobe要探测他的
+
+[i_mapping](https://blog.csdn.net/jinking01/article/details/106490467)
