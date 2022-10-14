@@ -62,10 +62,12 @@ uprobe 通过inode就可以知道二进制文件具体加载在进程地址空�
 
                 这里uprobe对象带有inode
                 inode 有i_mapping信息
-                i_mapping中有当前所有映射到inode的vma信息，也就是说，当前加载了这个二进制文件的内存映射关系都在i_mapping中
+                i_mapping中有当前所有映射到inode的vma信息，也就是说，当前加载了这个二进制文件的内存映射关系都在i_mapping中 address_space 结构体记录这些信息
                 这是存量hook，都install_breakpoint
 
-                install_breakpoint
+                install_breakpoint 通过vma的信息拿到old_page，然后copy一个page，跟一个新的anon vma关联，将int 3 插入新page，这样每个进程被hook的vma都指向了一个新的页面，填充了int 3(0xcc)
+
+                在hit breakpoint时 触发uprobe_notify_resume
     
     针对增量hook
         在uprobe_mmap中install_breakpoint
