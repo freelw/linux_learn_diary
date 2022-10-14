@@ -23,6 +23,8 @@ uprobe 通过inode就可以知道二进制文件具体加载在进程地址空�
 
 我现在猜测是因为uprobe机制不但可以hook 可执行程序中的符号，还可以hook 共享库中的符号，共享库中的符号是地址无关的
 
+[地址无关pie也是一个原因](https://stackoverflow.com/questions/37864773/computing-offset-of-a-function-in-memory)
+
 
     perf probe -x /lib64/libc.so.6 malloc
     perf probe -x /lib64/libc.so.6 printf
