@@ -1,8 +1,8 @@
     
 [uprobe](https://lwn.net/Articles/499190/)
 
-    echo 'r:wangli2 /root/linux_learn_diary/uprobe/uprobe_test:0x1136' >> /sys/kernel/debug/tracing/uprobe_events
-    echo 'p:wangli1 /root/linux_learn_diary/uprobe/uprobe_test:0x1136' >> /sys/kernel/debug/tracing/uprobe_events
+    echo 'p:func1 ./uprobe_test:0x1126' >> /sys/kernel/debug/tracing/uprobe_events
+    echo 'r:func1_ret ./uprobe_test:0x1126' >> /sys/kernel/debug/tracing/uprobe_events
     cat /sys/kernel/debug/tracing/uprobe_events
     echo 1 >/sys/kernel/debug/tracing/events/uprobes/enable
     echo 0 >/sys/kernel/debug/tracing/events/uprobes/enable
@@ -35,7 +35,9 @@ uprobe 通过inode就可以知道二进制文件具体加载在进程地址空�
     需要打开/sys/kernel/debug/tracing/events/probe_<xxx>/enable
 
     比如./uprobe_test func1
-    就直接perf probe -x ./uprobe_test func1
+    就直接
+    perf probe -x ./uprobe_test func1
+    perf probe -x ./uprobe_test func1%return
     然后cat /sys/kernel/debug/tracing/uprobe_events
 
     [root@VM-0-13-centos tracing]# cat /sys/kernel/debug/tracing/uprobe_events
