@@ -215,3 +215,16 @@
 * 20220920
 
     [批量将xps_cpus 绑定队列](https://gitee.com/freelw/linux_learn_diary/tree/master/xps_cmd_gen)
+
+* 20221018
+
+    [crash工具使用](https://www.jianshu.com/p/ad03152a0a53)
+
+* 20221019
+
+    查看进程调度器 命令行 pid
+    ps -eo class,cmd,pid
+
+    查看vruntime
+    cat /proc/sched_debug
+    cat /proc/$pid/sched

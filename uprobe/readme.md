@@ -1,12 +1,12 @@
     
 [uprobe](https://lwn.net/Articles/499190/)
 
+    echo 0 >/sys/kernel/debug/tracing/events/uprobes/enable
+    echo > /sys/kernel/debug/tracing/uprobe_events
     echo 'p:func1 ./uprobe_test:0x1126' >> /sys/kernel/debug/tracing/uprobe_events
     echo 'r:func1_ret ./uprobe_test:0x1126' >> /sys/kernel/debug/tracing/uprobe_events
     cat /sys/kernel/debug/tracing/uprobe_events
     echo 1 >/sys/kernel/debug/tracing/events/uprobes/enable
-    echo 0 >/sys/kernel/debug/tracing/events/uprobes/enable
-    echo > /sys/kernel/debug/tracing/uprobe_events
 
 ## 注意
     /sys/kernel/debug/tracing/tracing_on 需要设置为1
@@ -76,3 +76,27 @@ uprobe 通过inode就可以知道二进制文件具体加载在进程地址空�
         uprobe_mmap 在各种创建vma的位置被调用，也就是说新加载的vma，都要过一下有没有uprobe要探测他的
 
 [i_mapping](https://blog.csdn.net/jinking01/article/details/106490467)
+
+## kprobe相关
+
+[Linux kprobe调试技术使用](https://www.cnblogs.com/arnoldlu/p/9752061.html)
+
+## trace_options
+
+    cat /sys/kernel/debug/tracing/trace_options
+
+    打开stacktrace
+    echo stacktrace > /sys/kernel/debug/tracing/trace_options
+    关闭
+    echo nostacktrace > /sys/kernel/debug/tracing/trace_options
+
+## 使用kprobe探测uprobe流程
+
+    echo 0 > /sys/kernel/debug/tracing/events/kprobes/enable
+    echo > /sys/kernel/debug/tracing/kprobe_events
+    cat /sys/kernel/debug/tracing/kprobe_events
+    echo 'p:my_uprobe_register uprobe_register' > /sys/kernel/debug/tracing/kprobe_events
+    cat /sys/kernel/debug/tracing/kprobe_events
+    echo 1 > /sys/kernel/debug/tracing/events/kprobes/enable
+
+    cat /sys/kernel/debug/tracing/trace_pipe
