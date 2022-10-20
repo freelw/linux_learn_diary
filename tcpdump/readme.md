@@ -25,3 +25,7 @@
     -ttt tcpdump 输出时, 每两行打印之间会延迟一个段时间(以毫秒为单位)
     -tttt 在每行打印的时间戳之前添加日期的打印
 
+# 抓lacp报文
+
+    tcpdump -i enP8p1s0f2 ether proto 0x8809
+
