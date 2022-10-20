@@ -17,7 +17,8 @@ find -path xxx -prune 表示排除xxx目录(-prune True;  if  the  file  is  a  
 最终写入cscope.files
 
 第二个cscope命令的参数
--R 递归搜索
--b 只生成索引文件，不进入cscope的界面
--k 内核模式，不去搜索/usr/include
--q 生成cscope.in.out和cscope.po.out文件，加快cscope的索引速度
+
+    -R 递归搜索
+    -b 只生成索引文件，不进入cscope的界面
+    -k 内核模式，不去搜索/usr/include
+    -q 生成cscope.in.out和cscope.po.out文件，加快cscope的索引速度
