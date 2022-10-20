@@ -228,3 +228,7 @@
     查看vruntime
     cat /proc/sched_debug
     cat /proc/$pid/sched
+
+* 20221020
+
+    [cscope使用](https://gitee.com/freelw/linux_learn_diary/tree/master/cscope)
