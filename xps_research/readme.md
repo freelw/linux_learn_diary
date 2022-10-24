@@ -39,3 +39,19 @@
 
 
     从__dev_xmit_skb送出，接下来走qdisc相关逻辑
+
+
+# nettrace 输出
+
+
+    nettrace -p icmp  --addr 8.8.8.8
+    ***************** ffff8880151c7200,ffff8880151c7b00 ***************
+    [884179.831221] [ip_output           ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831232] [ip_finish_output    ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831236] [ip_finish_output2   ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831239] [__dev_queue_xmit    ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831244] [dev_hard_start_xmit ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831247] [skb_clone           ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831256] [tpacket_rcv         ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.831260] [consume_skb         ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5
+    [884179.844260] [consume_skb         ] ICMP: 172.21.0.13 -> 8.8.8.8 ping request, seq: 5

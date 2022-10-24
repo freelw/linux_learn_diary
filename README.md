@@ -236,3 +236,4 @@
 * 20221024
     
     [D状态检测](https://gitee.com/freelw/linux_learn_diary/tree/master/traceD)
+    [tencenos debuginfo](http://mirrors.tencent.com/os/tlinux_public/kernel/x86_64/x86-5.4.119-19-0009.1/)
