@@ -232,3 +232,7 @@
 * 20221020
 
     [cscope使用](https://gitee.com/freelw/linux_learn_diary/tree/master/cscope)
+
+* 20221024
+    
+    [D状态检测](https://gitee.com/freelw/linux_learn_diary/tree/master/traceD)
