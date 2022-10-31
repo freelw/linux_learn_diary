@@ -201,9 +201,9 @@ static void *trace_next(struct seq_file *s, void *v, loff_t *pos) {
     
     add_wait_queue(&r_wait, &wait);
     set_current_state(TASK_INTERRUPTIBLE);
-    
+    printk(KERN_INFO "trace sleep\n");
     schedule();
-
+	printk(KERN_INFO "wake up\n");
 	if (signal_pending(current)) {
 		return NULL;
 	}
