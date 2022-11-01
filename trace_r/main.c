@@ -1,5 +1,6 @@
 
 #include "header.h"
+#include <linux/kthread.h>
 
 
 struct mutex trace_mutex;
@@ -218,7 +219,7 @@ static void *trace_next(struct seq_file *s, void *v, loff_t *pos) {
 static int trace_show(struct seq_file *m, void *ptr)
 {
 	spin_lock_irqsave(&vring_lock, flags);
-	seq_printf(m, "123\n");
+	// seq_printf(m, "123\n");
 	/*if (!vring_overflowed)
 	{
 		seq_printf(m, vring_buffer);
@@ -249,6 +250,26 @@ static struct seq_operations trace_r_seq_ops = {
 DEFINE_BLOCK_PROC_ATTR_RO(trace);
 // DEFINE_PROC_ATTR_RO(trace);
 
+static struct task_struct *wakeup_task = NULL;
+static int should_wakeup = 0;
+
+static int wakeup_thread(void *arg) {
+    printk(KERN_INFO "enter wakeup_thread\n");
+    while (!kthread_should_stop()) {
+        set_current_state(TASK_INTERRUPTIBLE);
+        schedule_timeout(HZ);
+        if (should_wakeup) {
+			should_wakeup = 0;
+			printk(KERN_INFO "wakeup_thread\n");
+			wake_up_interruptible(&r_wait);
+		} else {
+			printk(KERN_INFO "wakeup_thread alive\n");
+		}
+    }
+	printk(KERN_INFO "out wakeup_thread\n");
+    return 0;
+}
+
 static int __init trace_r_init(void)
 {
 	printk(KERN_INFO "trace_r_init\n");
@@ -256,10 +277,13 @@ static int __init trace_r_init(void)
 
 	calc_load_tasks_local = (u64 *)kallsyms_lookup_name("calc_load_tasks");
 
-#if LINUX_VERSION_CODE == KERNEL_VERSION(4, 14, 105)
-	runqueues_local = (struct rq_local *)kallsyms_lookup_name("runqueues");
-#else
-#endif
+	wakeup_task = kthread_run(wakeup_thread, NULL, "wakeup-thread");
+	if (IS_ERR(wakeup_task)) {
+        printk(KERN_ERR "wakeup_task FAIL\n");
+		goto remove_proc;
+    } else {
+		printk(KERN_INFO "wakeup_task CREATE\n");
+	}
 	mutex_init(&trace_mutex);
     init_waitqueue_head(&r_wait);
 	spin_lock_init(&vring_lock);
@@ -278,7 +302,7 @@ static int __init trace_r_init(void)
         goto remove_proc;
 	if (!proc_create_data("trace", 0, parent_dir, &trace_fops, NULL))
 		goto remove_proc;
-
+	
 	return 0;
 
 remove_proc:
@@ -303,6 +327,16 @@ static void __exit trace_r_exit(void)
 		vfree(show_buffer);
 
 	remove_proc_subtree(PROC_DIR_TRACE_R, NULL);
+	if (wakeup_task) {
+		kthread_stop(wakeup_task);
+	}
+}
+
+
+void wakeup_main(void) 
+{
+	printk(KERN_INFO "wakeup_main\n");
+	should_wakeup = 1;
 }
 
 
