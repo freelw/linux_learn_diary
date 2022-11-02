@@ -13,18 +13,19 @@ def main():
     input = 'wakeup_trace.log'
     index = 0
     s = 0
-    interval = 5
+    interval = 1000 #ms
     dic = {}
     diff = 0
     for line in open(input):
         try:
             arr = line.split(':')
-            pid = line.split(' ')[7]
-            t = int(float(arr[0].split(' ')[-1])*100)
+            #print line.split()
+            pid = line.split()[6]
+            t = int(float(arr[0].split(' ')[-1])*1000)
             cindex = t / interval
-            t1 = cindex*interval/100.
+            t1 = cindex*interval/1000.
             if cindex != index:
-                print calc_date(t1), ' ', t1, 'per', interval*10, 'ms:', s, ' diff cnt: ', diff
+                print calc_date(t1), ' ', t1, 'per', interval, 'ms:', s, ' diff cnt: ', diff
                 s = 0
                 diff = 0
                 index = cindex
