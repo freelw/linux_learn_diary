@@ -241,3 +241,8 @@
 * 20221101
 
     [sched 调度相关](https://gitee.com/freelw/linux_learn_diary/tree/master/sched_analyze)
+
+* 20221105
+
+    [cgroup 1](https://www.cnblogs.com/sparkdev/p/8296063.html)
+    [cgroup 2](https://www.cnblogs.com/sparkdev/p/9523194.html)
