@@ -259,3 +259,4 @@
 * 20221221
     
     [BPF CO-RE 示例代码解析](https://www.cnblogs.com/charlieroro/p/14357802.html)
+    bpftool btf dump file /sys/kernel/btf/vmlinux format c 输出当前内核的所有数据结构定义
