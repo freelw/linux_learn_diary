@@ -255,3 +255,7 @@
 
     [perf_event_open](https://man7.org/linux/man-pages/man2/perf_event_open.2.html)
     PERF_COUNT_HW_INSTRUCTIONS 可以查看一段时间运行的指令数量，见最后的c程序demo
+
+* 20221221
+    
+    [BPF CO-RE 示例代码解析](https://www.cnblogs.com/charlieroro/p/14357802.html)
