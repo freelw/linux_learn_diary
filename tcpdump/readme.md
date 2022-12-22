@@ -29,3 +29,7 @@
 
     tcpdump -i enP8p1s0f2 ether proto 0x8809
 
+# tcpdump 直接过滤rst的包
+
+    tcpdump "tcp[tcpflags] & (tcp-rst) != 0" and host 169.254.0.47 -r  a.pcap
+
