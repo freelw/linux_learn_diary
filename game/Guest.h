@@ -2,6 +2,7 @@
 #define GUEST_H
 
 #include <iostream>
+#include <sstream>
 using namespace std;
 class Dish {
 public:
@@ -12,13 +13,14 @@ public:
         return name;
     }
     void Eat() {
-        if (percent >= 10) {
-            percent -= 10;
+        if (percent >= 1) {
+            percent -= 1;
         }
     }
     int Left() {
         return percent;
     }
+    
 private:
     std::string name;
     int percent;
@@ -32,9 +34,35 @@ public:
     }
 };
 
+class YangRouPaoMo: public Dish {
+    public:
+    YangRouPaoMo(): Dish("羊肉泡馍") {
+
+    }
+};
+
+class KuafuZhachuan: public Dish {
+    public:
+    KuafuZhachuan(): Dish("夸父炸串") {
+
+    }
+};
+
+class NaiNai: public Dish {
+    public:
+    NaiNai(): Dish("奶奶") {
+
+    }
+};
+
+
+
 class Guset {
 public:
-    Guset(const std::string &name): name(name), dish(NULL), ordered(false), tick(0), hungry(0) {
+    Guset(const std::string &name, int index): dish(NULL), ordered(false), tick(0), hungry(0) {
+        ostringstream oss;
+        oss << name << "_" << index;
+        this->name = oss.str();
     
     }
     std::string Who() {
@@ -71,6 +99,14 @@ public:
         return hungry;
     }
 
+    bool hasOrdered() {
+        return ordered;
+    }
+
+    bool hasDish() {
+        return dish != NULL;
+    }
+
     void GetDish(Dish *dish) {
         this->dish = dish;
         ordered = 0;
@@ -78,6 +114,7 @@ public:
     }
     virtual void Order() = 0;
     virtual int Pay() = 0;
+    virtual Dish * BuildDish() = 0;
 
 protected:
     std::string name;

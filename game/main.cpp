@@ -1,18 +1,21 @@
+#include <cstdlib>
 #include <unistd.h>
 #include <iostream>
 
 #include "Guest.h"
 #include "Danta.h"
+#include "Lidawang.h"
+#include "Xixi.h"
+#include "Madalan.h"
 
 #define GAME_TICK 1000000
-#define MAX_GUEST 50
+#define MAX_GUEST 10
 using namespace std;
 
 int loop_cnt = 0;
 bool should_desc = false;
 
 void validate_desc();
-class Guset;
 Guset* guests[MAX_GUEST];
 
 void print_now() {
@@ -23,21 +26,28 @@ void print_now() {
     }
 }
 
-
-
-
 void serv() {
     for (int i = 0; i < MAX_GUEST; ++ i) {
         if (guests[i]) {
             if (guests[i]->GetHungry() > 5) {
-                guests[i]->GetDish(new GouLiang());
+                guests[i]->GetDish(guests[i]->BuildDish());
             }
         }
     }
 }
 
 Guset* rand_come() {
-    return new Danta();
+    int index = rand() % 4;
+    switch (index) {
+    case 0:
+        return new Danta(loop_cnt);
+    case 1:
+        return new Madalan(loop_cnt);
+    case 2:
+        return new Xixi(loop_cnt);
+    default:
+        return new Lidawang(loop_cnt);
+    }
 }
 
 void validate_desc() {
@@ -48,12 +58,11 @@ void update_desc() {
     if (loop_cnt % 10) {
         return ;
     }
-
     validate_desc();
 }
 
 void guest_come() {
-    if (loop_cnt % 50) {
+    if (loop_cnt % 10) {
         return ;
     }
     for (int i = 0; i < MAX_GUEST; ++ i) {
@@ -67,7 +76,6 @@ void guest_come() {
 }
 
 void desc() {
-
     if (!should_desc) {
         return ;
     }
@@ -78,8 +86,6 @@ void desc() {
         }
     }
     cout << endl;
-    
-    cout << endl;
 }
 
 void guest_action() {
@@ -89,7 +95,7 @@ void guest_action() {
         }
     }
     for (int i = 0; i < MAX_GUEST; ++ i) {
-        if (guests[i]) {
+        if (guests[i] && !guests[i]->hasOrdered() && !guests[i]->hasDish()) {
             guests[i]->Order();
         }
     }
@@ -122,6 +128,7 @@ void main_loop() {
 }
 
 void init() {
+    srand((unsigned)time(NULL));
     for (int i = 0; i < MAX_GUEST; ++ i) {
         guests[i] = NULL;
     }
