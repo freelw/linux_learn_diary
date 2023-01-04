@@ -264,3 +264,6 @@
 * 20221222
 
     [ebpf & bcc 中文教程及手册](https://blog.cyru1s.com/posts/ebpf-bcc.html)
+
+* 20230104
+    [linux文件系统基础--VFS中的file、dentry和inode--讲得非常透的一篇文章](https://blog.csdn.net/jinking01/article/details/105109089)
