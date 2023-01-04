@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pkill dpdk-ptrace
+pkill -signal 2 dpdk-ptrace
