@@ -1,2 +1,2 @@
 #!/bin/bash
-find /data/dbg/rotate_trace/logs/ -mmin +120 -name "trace*" -exec rm {} \;
+find /data/dbg/rotate_trace/logs/ -mmin +10 -name "trace*" -exec rm {} \;
