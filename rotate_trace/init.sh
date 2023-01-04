@@ -12,5 +12,5 @@ else
 fi
 
 sed -i "/data\/dbg\/rotate_trace/d" $crontfile
-echo "*/20 * * * * cd /data/dbg/rotate_trace/ && ./restart.sh >> /dev/null 2>&1 &" >> $crontfile
-echo "*/20 * * * * cd /data/dbg/rotate_trace/ && ./clear.sh >> /dev/null 2>&1 &" >> $crontfile
+echo "*/5 * * * * cd /data/dbg/rotate_trace/ && ./restart_trace.sh >> /dev/null 2>&1 &" >> $crontfile
+echo "*/5 * * * * cd /data/dbg/rotate_trace/ && ./clear_trace.sh >> /dev/null 2>&1 &" >> $crontfile
