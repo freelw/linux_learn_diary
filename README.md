@@ -267,3 +267,6 @@
 
 * 20230104
     [linux文件系统基础--VFS中的file、dentry和inode--讲得非常透的一篇文章](https://blog.csdn.net/jinking01/article/details/105109089)
+
+* 20230202
+    [使用pv nc 限速传输测试](https://gitee.com/freelw/linux_learn_diary/tree/master/pv_nc)
