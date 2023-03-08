@@ -31,3 +31,24 @@ DCL 权限语句
         age int comment '年龄',
         gender varchar(1) comment '性别'
     ) comment '用户表';
+
+    show create table tb_user;
+
+    修改表
+    alter table tb_user add nickname varchar(20) comment '昵称';
+
+# DML
+
+    insert
+    update
+    delete
+
+# DQL
+
+    select 
+    from
+    where
+    group by
+    having
+    order by
+    limit
