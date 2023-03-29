@@ -270,3 +270,6 @@
 
 * 20230202
     [使用pv nc 限速传输测试](https://gitee.com/freelw/linux_learn_diary/tree/master/pv_nc)
+
+* 20230329
+    [folly 编译方法](https://gitee.com/freelw/linux_learn_diary/tree/master/folly_learn)
