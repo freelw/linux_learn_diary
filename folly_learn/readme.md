@@ -41,7 +41,7 @@ int main() {
     return 0;
 }
 ```
-9. makefile
+9. makefile (注意fmt-SuXDTpdKuhMrTm0IHfrTVn2LlQo1YD7ehH6GUsDviU4这个路径需要手动看一下installed目录下fmt子目录的真实名称，用来连接libfmt.a)
 
 ```
 CXX=/usr/bin/g++
@@ -50,14 +50,14 @@ SCRATCH_PATH=/home/ubuntu/folly_install/installed
 INCLUDE = -I$(SCRATCH_PATH)/folly/include
 CXXFLAGS += -g -Wall
 LDFLAGS += -L$(SCRATCH_PATH)/folly/lib
-LDFLAGS += -L/tmp/fbcode_builder_getdeps-ZhomeZubuntuZfollyZbuildZfbcode_builder/installed/fmt-Pl3nxizTjzUQPALHXS-s59qcZkscq5e0_5X2m6kz5ag/lib
+LDFLAGS += -L$(SCRATCH_PATH)/fmt-SuXDTpdKuhMrTm0IHfrTVn2LlQo1YD7ehH6GUsDviU4/lib
 LDFLAGS += -lfolly -lglog -ldl -lpthread -lfmt
 
 all:
-    $(CXX) $(CXXFLAGS) $(INCLUDE)  -c source.cpp -o source.o
-    $(CXX) source.o $(LDFLAGS)  -o folly_test
+	$(CXX) $(CXXFLAGS) $(INCLUDE)  -c source.cpp -o source.o
+	$(CXX) source.o $(LDFLAGS)  -o folly_test
 clean:
-    rm folly_test source.o
+	rm folly_test source.o
 ```
 10. make 后执行 `./folly_test`
 
