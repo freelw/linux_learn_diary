@@ -1,0 +1,12 @@
+<idle>-0     [007] dNs. 1022041.488487: sched_wakeup: comm=java pid=18743 prio=120 success=1 target_cpu=006
+<idle>-0     [007] dNs. 1022041.488488: sched_wakeup: comm=java pid=18861 prio=120 success=1 target_cpu=005
+<idle>-0     [007] dNs. 1022041.488490: sched_wakeup: comm=java pid=19193 prio=120 success=1 target_cpu=005
+<idle>-0     [007] dNs. 1022041.488492: sched_wakeup: comm=java pid=18825 prio=120 success=1 target_cpu=005
+<idle>-0     [007] dNs. 1022041.488493: sched_wakeup: comm=java pid=18800 prio=120 success=1 target_cpu=007
+<idle>-0     [007] dNs. 1022041.488495: sched_wakeup: comm=java pid=18797 prio=120 success=1 target_cpu=006
+<idle>-0     [007] dNs. 1022041.488497: sched_wakeup: comm=java pid=18770 prio=120 success=1 target_cpu=007
+<idle>-0     [007] dNs. 1022041.488498: sched_wakeup: comm=java pid=19012 prio=120 success=1 target_cpu=006
+<idle>-0     [007] dNs. 1022041.488500: sched_wakeup: comm=java pid=18573 prio=120 success=1 target_cpu=005
+<idle>-0     [007] dNs. 1022041.488502: sched_wakeup: comm=java pid=1910 prio=120 success=1 target_cpu=007
+<idle>-0     [007] dNs. 1022041.488503: sched_wakeup: comm=java pid=18556 prio=120 success=1 target_cpu=005
+
