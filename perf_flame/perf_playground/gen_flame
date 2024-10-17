@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 INPUT=perf.data
+FLAME_HOME=/root/FlameGraph
 if test $# -eq 1; then
     INPUT=$1
 fi
@@ -8,7 +9,7 @@ echo 'input:' ${INPUT}
 chown root.root ${INPUT}
 DATE=`date "+%Y-%m-%d_%H_%M_%S"`
 FILENAME=process_${INPUT}_${DATE}.svg
-perf script -i ${INPUT} | /root/FlameGraph/stackcollapse-perf.pl | /root/FlameGraph/flamegraph.pl > output/${FILENAME}
+perf script -i ${INPUT} | ${FLAME_HOME}/stackcollapse-perf.pl | ${FLAME_HOME}/flamegraph.pl > output/${FILENAME}
 echo "http://xixibaobei.cc:8080/output/${FILENAME}"
 echo "http://152.136.137.213:8080/output/${FILENAME}"
 python3 -m http.server 8080
