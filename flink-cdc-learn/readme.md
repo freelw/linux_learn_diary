@@ -99,8 +99,8 @@ main 调用
 ```
 `CliExecutor.java`
 ```
-通过 YamlPipelineDefinitionParser 将 pipelineDefPath parse为pipelineDef
-PipelineComposer 通过pipelineDef的定义调用flink的api构建流水线
+1. 通过 YamlPipelineDefinitionParser 将 pipelineDefPath parse为pipelineDef
+2. PipelineComposer 通过pipelineDef的定义调用flink的api构建流水线
 ```
 
 ### schema event的流动
