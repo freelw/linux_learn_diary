@@ -2,7 +2,7 @@
 
 [flink-cdc-3 glimpse](https://medium.com/@ipolyzos_/a-glimpse-into-flink-cdc-3-0-a985fb5895a5)
 
-3.0 重要特性
+### 3.0 重要特性
 
 * 通过yaml文件定义pipeline
 * 能够感知schema变更
