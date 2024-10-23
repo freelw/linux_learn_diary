@@ -149,7 +149,7 @@ main 调用
 #### schema event的流动
 
 SchemaOperator与sink绑定，这里绑定关系到之后的几个操作
-1. 定义一个sink的时候要提供MetaApplier，运行在JobManager（上方），通过Rpc与SchemaOperator交互
+1. 定义一个sink的时候要提供MetadataApplier，运行在JobManager（上方），通过Rpc与SchemaOperator交互
 ```
         schemaOperatorTranslator.translate(
                         ...
@@ -243,12 +243,18 @@ private SchemaChangeResponse requestSchemaChange(
         }
         ```
 
-* hang在requestSchemaChangeResult，等待MetaApplier变更下游数据库schema（比如Doris），天然hang住了上游消息
-* 如果不是第一个requestSchemaChange（相同请求已经在被处理），会hang在requestSchemaChange，也天然hang住上游消息，在Coordinator(SchemaRegistry/MetaAppier)处理好之后会走duplicate分支，只打印一个日志
+* hang在requestSchemaChangeResult，等待MetadataApplier变更下游数据库schema（比如Doris），天然hang住了上游消息
+* 如果不是第一个requestSchemaChange（相同请求已经在被处理），会hang在requestSchemaChange，也天然hang住上游消息，在Coordinator(SchemaRegistry/MetaAppier)处理好之后会走duplicate分支，只打印日志`"{}> Schema change event {} has been handled in another subTask already."`
+* 下游sink在处理完flush之后会触发notifyFlushSuccess，`SchemaRegistry.java` SchemaRegistry会调用`handleEventFromOperator`响应，最终调用到`SchemaRegistryRequestHandler.java`中的`applySchemaChange`, 调用对应sink的metadataApplier
+        ```
+        metadataApplier.applySchemaChange(changeEvent);
+        ```
+* 上面步骤完成之后第一个hang住的requestSchemaChange会返回
+
 
 
 ### glimpse 中没有说清楚的点
-1. schema变更消息会在每个并发度的源头都会产生吗？回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetaApplier）的响应
+1. schema变更消息会在每个并发度的源头都会产生吗？回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetadataApplier）的响应
 ### 如何安全变更后端schema
 
 ### 实现一个sink的基本要求
