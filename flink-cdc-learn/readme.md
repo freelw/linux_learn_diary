@@ -140,7 +140,7 @@ main 调用
 ```
 这里可以看到从yaml的描述到stream的转化
 
-stream 关联-> 当前 env 关联-> FlinkPipelineExecution
+`stream` 关联-> `当前 env` 关联-> `FlinkPipelineExecution`
 最终通过FlinkPipelineExecution.execute()调用用到env.executeAsync()
 
 这里处理用户描述的source和sink节点，flink-cdc还自动插入了一个SchemaOperator节点
