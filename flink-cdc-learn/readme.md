@@ -7,7 +7,7 @@
 * 通过yaml文件定义pipeline
 * 能够感知schema变更
 
-## 使用pipeline
+## pipeline demo
 我们使用一个特殊的sink类型“values”，来观察各种事件的产生，values这个sink会将产生的事件打印在stdout
 需要引入包`flink-cdc-pipeline-connector-values-3.3-SNAPSHOT.jar`，可以从flink-cdc工程中编译`flink-cdc-pipeline-connector-values`得到
 ![](img/image4.png)
@@ -34,7 +34,7 @@ pipeline:
  name: Sync Mysql Database to Values
  parallelism: 2
 ```
-**注意：parallelism > 1 时候一定要开启checkpoint**
+**注意：parallelism > 1 时候一定要在flink中开启checkpoint**
 ### 提交flink-cdc任务
 ```
 ./bin/flink-cdc.sh mysql-to-values.yaml
@@ -56,8 +56,6 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 ![](img/image.png)
 
-![](img/1.webp)
-
 ### 日志解析
 注意看左侧的 ">"
 
@@ -77,3 +75,7 @@ and SchemaChangeEvent must be emitted before any DataChangeEvent if the schema o
 ```
 见[understand-flink-cdc-api](https://nightlies.apache.org/flink/flink-cdc-docs-release-3.2/docs/developer-guide/understand-flink-cdc-api/)
 ![](img/image3.png)
+
+
+## schema evolution 实现原理
+![](img/1.webp)
