@@ -90,4 +90,4 @@ a CreateTableEvent must be emitted before any DataChangeEvent if a table is new 
 and SchemaChangeEvent must be emitted before any DataChangeEvent if the schema of a table is changed. 
 ```
 [understand-flink-cdc-api](https://nightlies.apache.org/flink/flink-cdc-docs-release-3.2/docs/developer-guide/understand-flink-cdc-api/)
-![](image3.png)
+![](img/image3.png)
