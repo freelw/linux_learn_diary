@@ -142,6 +142,8 @@ main 调用
 
 stream 关联-> 当前 env 关联-> FlinkPipelineExecution 调用-> env.exec
 
+![alt text](img/image6.png)
+
 这里处理用户描述的source和sink节点，flink-cdc还自动插入了一个schema operator节点
 
 ![](img/image5.png)
