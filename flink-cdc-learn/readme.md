@@ -72,10 +72,18 @@ flink-cdc 官方文档中描述: schema相关event与DataChangeEvent之间有如
 ```
 a CreateTableEvent must be emitted before any DataChangeEvent if a table is new to the framework, 
 and SchemaChangeEvent must be emitted before any DataChangeEvent if the schema of a table is changed. 
+This requirement makes sure that the framework has been aware of the schema before processing any data changes.
 ```
 见[understand-flink-cdc-api](https://nightlies.apache.org/flink/flink-cdc-docs-release-3.2/docs/developer-guide/understand-flink-cdc-api/)
 ![](img/image3.png)
 
-
 ## schema evolution 实现原理
 ![](img/1.webp)
+
+### 从yaml到pipeline的转化
+
+### schema event的流动
+
+### 如何安全变更后端schema
+
+### 实现一个sink的基本要求
