@@ -216,7 +216,7 @@ private SchemaChangeResponse requestSchemaChange(
 这时两个请求只有一个会被处理，另外一个会被认为是duplicate
 
 处理的步骤如下
-* 发起schema变更请求, 这时天然hang住了上游的消息
+* 发起schema变更请求requestSchemaChange
 * 如果被Coordinator Accept，执行`output.collect(new StreamRecord<>(new FlushEvent(tableId)));`
         
   * flushEvent在`PrePartitionOperator.java`被广播给下游所有的sink
@@ -243,8 +243,12 @@ private SchemaChangeResponse requestSchemaChange(
         }
         ```
 
+* hang在requestSchemaChangeResult，等待MetaApplier变更下游数据库schema（比如Doris），天然hang住了上游消息
+* 如果不是第一个requestSchemaChange（相同请求已经在被处理），会hang在requestSchemaChange，也天然hang住上游消息，在Coordinator(SchemaRegistry/MetaAppier)处理好之后会走duplicate分支，只打印一个日志
 
-* 
+
+### glimpse 中没有说清楚的点
+1. schema变更消息会在每个并发度的源头都会产生吗？回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetaApplier）的响应
 ### 如何安全变更后端schema
 
 ### 实现一个sink的基本要求
