@@ -9,7 +9,7 @@
 
 ## 使用pipeline
 我们使用一个特殊的sink类型“values”，来观察各种事件的产生，values这个sink会将产生的事件打印在stdout
-需要引入包`flink-cdc-pipeline-connector-values-3.3-SNAPSHOT.jar`，可以从flink-cdc工程中编译得到
+需要引入包`flink-cdc-pipeline-connector-values-3.3-SNAPSHOT.jar`，可以从flink-cdc工程中编译`flink-cdc-pipeline-connector-values`得到
 ![](img/image4.png)
 ```
 ################################################################################
