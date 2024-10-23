@@ -86,7 +86,8 @@ Records: 0  Duplicates: 0  Warnings: 0
 
 flink-cdc 官方文档中描述: schema相关event与DataChangeEvent之间有如下的顺序保证
 ```
-a CreateTableEvent must be emitted before any DataChangeEvent if a table is new to the framework, and SchemaChangeEvent must be emitted before any DataChangeEvent if the schema of a table is changed. 
+a CreateTableEvent must be emitted before any DataChangeEvent if a table is new to the framework, 
+and SchemaChangeEvent must be emitted before any DataChangeEvent if the schema of a table is changed. 
 ```
 [understand-flink-cdc-api](https://nightlies.apache.org/flink/flink-cdc-docs-release-3.2/docs/developer-guide/understand-flink-cdc-api/)
 ![](image3.png)
