@@ -93,11 +93,14 @@ exec "$JAVA_RUN" -classpath "$CLASSPATH" "${LOG_SETTINGS[@]}" org.apache.flink.c
 入口类 `CliFrontend` 在 `CliFrontend.java`
 
 ```
-  main 调用
-
-    createExecutor 调用
-
-      new CliExecutor 其中 pipelineDefPath 是yaml文件的路径
+main 调用
+  createExecutor 调用
+    new CliExecutor 其中 pipelineDefPath 是yaml文件的路径
+```
+`CliExecutor.java`
+```
+通过 YamlPipelineDefinitionParser 将 pipelineDefPath parse为pipelineDef
+PipelineComposer 通过pipelineDef的定义调用flink的api构建流水线
 ```
 
 ### schema event的流动
