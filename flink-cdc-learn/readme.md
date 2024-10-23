@@ -82,7 +82,8 @@ This requirement makes sure that the framework has been aware of the schema befo
 ![](img/image3.png)
 
 ## schema evolution 实现原理
-![](img/1.webp)
+![](img/image6.png)
+SchemaRegistry运行在JobManager中，继承Coordinator与SchemaOperator交互，负责协调不同流水线中收到schema变更event后的同步
 
 ### 从yaml到pipeline的转化
 
@@ -141,8 +142,6 @@ main 调用
 这里可以看到从yaml的描述到stream的转化
 
 stream 关联-> 当前 env 关联-> FlinkPipelineExecution 调用-> env.exec
-
-![alt text](img/image6.png)
 
 这里处理用户描述的source和sink节点，flink-cdc还自动插入了一个schema operator节点
 
