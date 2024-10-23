@@ -1,11 +1,16 @@
 # Flink-cdc Schema Evolution 详解
 
-
 [flink-cdc-3 glimpse](https://medium.com/@ipolyzos_/a-glimpse-into-flink-cdc-3-0-a985fb5895a5)
 
-最大的变化是，可以不用再写代码，而是直接配置一个yaml，就能完成cdc pipeline的构建
-## 使用pipeline
+3.0 版本变化
 
+* 最大的变化是，可以不用再写代码，而是直接配置一个yaml，就能完成cdc pipeline的构建
+* 另外3.0版本中提供了对于schema变更的支持，在上游mysql发生schema变化时，下游的sink可以直接感受到
+
+## 使用pipeline
+我们使用一个特殊的sink类型“values”，来观察各种事件的产生，values这个sink会将产生的事件打印在stdout
+需要引入包`flink-cdc-pipeline-connector-values-3.3-SNAPSHOT.jar`，可以从flink-cdc工程中编译得到
+![](img/image4.png)
 ```
 ################################################################################
 # Description: Sync MySQL all tables to Doris
@@ -89,5 +94,5 @@ flink-cdc 官方文档中描述: schema相关event与DataChangeEvent之间有如
 a CreateTableEvent must be emitted before any DataChangeEvent if a table is new to the framework, 
 and SchemaChangeEvent must be emitted before any DataChangeEvent if the schema of a table is changed. 
 ```
-[understand-flink-cdc-api](https://nightlies.apache.org/flink/flink-cdc-docs-release-3.2/docs/developer-guide/understand-flink-cdc-api/)
+见[understand-flink-cdc-api](https://nightlies.apache.org/flink/flink-cdc-docs-release-3.2/docs/developer-guide/understand-flink-cdc-api/)
 ![](img/image3.png)
