@@ -91,7 +91,6 @@ This requirement makes sure that the framework has been aware of the schema befo
 exec "$JAVA_RUN" -classpath "$CLASSPATH" "${LOG_SETTINGS[@]}" org.apache.flink.cdc.cli.CliFrontend "$@"
 ```
 * 入口类 `CliFrontend` 在 `CliFrontend.java`
-
 ```
 main 调用
   createExecutor 调用
@@ -102,6 +101,46 @@ main 调用
 1. 通过 YamlPipelineDefinitionParser 将 pipelineDefPath parse为pipelineDef
 2. PipelineComposer 通过pipelineDef的定义调用flink的api构建流水线
 ```
+* `FlinkPipelineComposer.java`
+```
+// Build Source Operator
+        DataSourceTranslator sourceTranslator = new DataSourceTranslator();
+        DataStream<Event> stream =
+                sourceTranslator.translate(
+                        pipelineDef.getSource(), env, pipelineDef.getConfig(), parallelism);
+
+...
+
+// Schema operator
+        SchemaOperatorTranslator schemaOperatorTranslator =
+                new SchemaOperatorTranslator(
+                        schemaChangeBehavior,
+                        pipelineDef.getConfig().get(PipelineOptions.PIPELINE_SCHEMA_OPERATOR_UID),
+                        pipelineDef
+                                .getConfig()
+                                .get(PipelineOptions.PIPELINE_SCHEMA_OPERATOR_RPC_TIMEOUT));
+        OperatorIDGenerator schemaOperatorIDGenerator =
+                new OperatorIDGenerator(schemaOperatorTranslator.getSchemaOperatorUid());
+
+...
+
+// Build DataSink in advance as schema operator requires MetadataApplier
+        DataSinkTranslator sinkTranslator = new DataSinkTranslator();
+        DataSink dataSink =
+                sinkTranslator.createDataSink(pipelineDef.getSink(), pipelineDef.getConfig(), env);
+
+        stream =
+                schemaOperatorTranslator.translate(
+                        stream,
+                        parallelism,
+                        dataSink.getMetadataApplier()
+                                .setAcceptedSchemaEvolutionTypes(
+                                        pipelineDef.getSink().getIncludedSchemaEvolutionTypes()),
+                        pipelineDef.getRoute());
+```
+这里可以看到从yaml的描述到stream的转化
+
+stream 关联-> 当前 env 关联-> FlinkPipelineExecution 调用-> env.exec
 
 ### schema event的流动
 
