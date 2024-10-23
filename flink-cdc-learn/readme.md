@@ -4,8 +4,8 @@
 
 3.0 版本变化
 
-* 最大的变化是，可以不用再写代码，而是直接配置一个yaml，就能完成cdc pipeline的构建
-* 另外3.0版本中提供了对于schema变更的支持，在上游mysql发生schema变化时，下游的sink可以直接感受到
+* 通过yaml文件定义pipeline
+* 能够感知schema变更
 
 ## 使用pipeline
 我们使用一个特殊的sink类型“values”，来观察各种事件的产生，values这个sink会将产生的事件打印在stdout
