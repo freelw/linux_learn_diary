@@ -86,6 +86,15 @@ This requirement makes sure that the framework has been aware of the schema befo
 
 ### 从yaml到pipeline的转化
 
+入口`flink-cdc.sh`
+```
+exec "$JAVA_RUN" -classpath "$CLASSPATH" "${LOG_SETTINGS[@]}" org.apache.flink.cdc.cli.CliFrontend "$@"
+```
+入口类 `CliFrontend` 在 `CliFrontend.java`
+  main 调用
+    createExecutor 调用
+      new CliExecutor 其中 pipelineDefPath 是yaml文件的路径
+
 ### schema event的流动
 
 ### 如何安全变更后端schema
