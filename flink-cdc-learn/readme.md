@@ -71,3 +71,7 @@ Records: 0  Duplicates: 0  Warnings: 0
 ![](img/image.png)
 
 ![](img/1.webp)
+
+![](img/image1.png)
+由于yaml中设置的并发度是2，所有可以看到日志中有两个任务在打印
+注意CreateTableEvent和AddColumnEvent这样的关于schema改变的事件会出现在两个并发中，而一个DataChangeEvent事件只会出现在单独一个并发中
