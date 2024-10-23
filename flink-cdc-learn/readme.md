@@ -218,8 +218,10 @@ private SchemaChangeResponse requestSchemaChange(
 处理的步骤如下
 * 发起schema变更请求, 这时天然hang住了上游的消息
 * 如果被Coordinator Accept，执行`output.collect(new StreamRecord<>(new FlushEvent(tableId)));`
-        * flushEvent在`PrePartitionOperator.java`被广播给下游所有的sink
+        
+  * flushEvent在`PrePartitionOperator.java`被广播给下游所有的sink
 
+        
         ```
         public void processElement(StreamRecord<Event> element) throws Exception {
               ...
@@ -231,9 +233,8 @@ private SchemaChangeResponse requestSchemaChange(
         }
         ```
 
-        * flushEvent在sink中会触发当前sink flush所有缓存的事件，之后通知Coordinator完成
-        `DataSinkFunctionOperator.java`
-        
+  * flushEvent在sink中会触发当前sink flush所有缓存的事件，之后通知Coordinator完成`DataSinkFunctionOperator.java`
+
         ```
         private void handleFlushEvent(FlushEvent event) throws Exception {
                 userFunction.finish();
