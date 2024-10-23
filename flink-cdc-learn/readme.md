@@ -250,11 +250,38 @@ private SchemaChangeResponse requestSchemaChange(
         metadataApplier.applySchemaChange(changeEvent);
         ```
 * 上面步骤完成之后第一个hang住的requestSchemaChange会返回
+#### MetadataApplier中干了什么
+拿Doris举例, 直接去修改后端的列了，这时修改是安全的，因为上游的mysql修改schema之后产生的消息都被hang住，修改schema之前的消息都已经被各个sink flush消费完
 
-
+`DorisMetadataApplier.java`
+```
+ public void applySchemaChange(SchemaChangeEvent event) {
+        SchemaChangeEventVisitor.<Void, SchemaEvolveException>visit(
+                event,
+                addColumnEvent -> {
+                    applyAddColumnEvent(addColumnEvent);
+                    return null;
+                },
+                alterColumnTypeEvent -> {
+                    applyAlterColumnTypeEvent(alterColumnTypeEvent);
+                    return null;
+                },
+                createTableEvent -> {
+                    applyCreateTableEvent(createTableEvent);
+                    return null;
+                },
+                dropColumnEvent -> {
+                    applyDropColumnEvent(dropColumnEvent);
+                    return null;
+                },
+                ...
+```
 
 ### glimpse 中没有说清楚的点
 1. schema变更消息会在每个并发度的源头都会产生吗？回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetadataApplier）的响应
-### 如何安全变更后端schema
-
-### 实现一个sink的基本要求
+### 总结
+通过加入了SchemaOperator和MetadataApplier，监控所有消息，当发生schema变更是，同步上下游
+1. hang住上游
+2. flush下游
+3. 修改下游schema
+4. 恢复
