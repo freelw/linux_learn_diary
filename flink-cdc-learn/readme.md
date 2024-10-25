@@ -1,6 +1,20 @@
 # Flink-cdc Schema Evolution 详解
 
+### glimpse
 [flink-cdc-3 glimpse](https://medium.com/@ipolyzos_/a-glimpse-into-flink-cdc-3-0-a985fb5895a5)
+
+### 源码基于
+```
+~/project/flink_src/flink-cdc master !4 ❯ git remote -v
+origin  https://github.com/apache/flink-cdc.git (fetch)
+origin  https://github.com/apache/flink-cdc.git (push)
+~/project/flink_src/flink-cdc master !4 ❯ git rev-parse HEAD
+a5b666a3254b87b44b9a3843a4d001793e86552c
+```
+```
+<revision>3.3-SNAPSHOT</revision>
+```
+
 
 ### flink-cdc 3.0 重要特性
 
