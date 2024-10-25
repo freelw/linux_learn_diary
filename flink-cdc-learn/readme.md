@@ -41,9 +41,9 @@ pipeline:
 **注意：parallelism > 1 时候一定要在flink中开启checkpoint**
 1. 这是flink-cdc的已知bug，尚未解决 [bug链接](https://issues.apache.org/jira/browse/FLINK-34792?jql=project%20%3D%20FLINK%20AND%20issuetype%20%3D%20Bug%20AND%20text%20~%20%22flink-cdc%20checkpoint%22%20ORDER%20BY%20issuetype%20DESC%2C%20priority%20ASC%2C%20updated%20DESC)
 2. 如果想要使用flink-cdc源码调试，需要开启 --use-mini-cluster true
-![](img/image7.png)
-3. 并且修改FlinkPipelineComposer的ofMiniCluster方法，手动设置enableCheckpointing
 ![](img/image8.png)
+3. 并且修改FlinkPipelineComposer的ofMiniCluster方法，手动设置enableCheckpointing
+![](img/image7.png)
 ### 提交flink-cdc任务
 ```
 ./bin/flink-cdc.sh mysql-to-values.yaml
