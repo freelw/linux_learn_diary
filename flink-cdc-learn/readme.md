@@ -15,7 +15,6 @@ a5b666a3254b87b44b9a3843a4d001793e86552c
 <revision>3.3-SNAPSHOT</revision>
 ```
 
-
 ### flink-cdc 3.0 重要特性
 
 * 通过yaml文件定义pipeline
