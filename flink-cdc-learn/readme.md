@@ -405,6 +405,84 @@ SourceReader - Read the records from the splits assigned by the SplitEnumerator.
 ```
 ![](img/image10.png)
 
+可以看到，SplitEnumerator运行在JobManager中，负责给reader分配split，这里面就包括snapShotSplit和binlogSplit
+
+可以想象，在任务刚启动的时候，要拉取mysql的存量数据，这时是可以通过分隔主键区间，在多个任务上并行进行的
+
+我们可以看MySqlSourceEnumerator的 splitAssigner，默认情况下是一个MySqlHybridSplitAssigner
+
+一个assigner负责提供getNext方法，当reader需要split的时候会请求enumerator，enumerator会调用assigner的getNext方法枚举下一个split
+
+上面看到在binlog的场景下只会枚举到1个split，第二个reader再来请求时就会返回空
+
+这里hybrid的含义就是这个assigner工作在两种模式下，也就是两个阶段
+
+1. 存量数据读取阶段
+2. 增量数据读取阶段
+
+在存量读取阶段，实际上是实用了MySqlSnapshotSplitAssigner的能力
+
+在MySqlSnapshotSplitAssigner.java的开头有一段描述
+
+```
+/**
+ * A {@link MySqlSplitAssigner} that splits tables into small chunk splits based on primary key
+ * range and chunk size.
+ *
+ * @see MySqlSourceOptions#SCAN_INCREMENTAL_SNAPSHOT_CHUNK_SIZE
+ */
+```
+
+这个assigner会根据 primary key 切分出多个split，可以同时被多个reader执行
+
+当存量数据读取完成，会进入到增量读取阶段，这时候只有一个source能够工作，其他的source实际上没有数据输入
+
+阿里云上针对这个场景可以做到动态缩容[关于MySQL CDC源表](https://help.aliyun.com/zh/flink/developer-reference/mysql-connector/#section-mxk-9ip-5kv)
+
+```
+全量阶段积累了大量历史数据，为了提高读取效率，通常采用并发的方式读取历史数据。而在Binlog增量阶段，因为Binlog数据量少且为了保证全局有序，通常只需要单并发读取。全量阶段和增量阶段对资源的不同需求，可以通过自动调优功能自动帮您实现性能和资源的平衡。
+
+自动调优会监控MySQL CDC Source的每个task的流量。当进入Binlog阶段，如果只有一个task在负责Binlog读取，其他task均空闲时，自动调优便会自动缩小Source的CU数和并发。开启自动调优只需要在作业运维页面，将自动调优的模式设置为Active模式。
+```
+
+另外可以开启多线程加速binlog解析，但是最终还是要存放到一个穿行队列中
+
+```
+MySQL连接器作为源表或数据摄入数据源使用时，在增量阶段会解析Binlog文件生成各种变更消息，Binlog文件使用二进制记录着所有表的变更，可以通过以下方式加速Binlog文件解析。
+
+开启并行解析和解析过滤配置
+
+使用配置项scan.only.deserialize.captured.tables.changelog.enabled：仅对指定表的变更事件进行解析。
+
+使用配置项scan.only.deserialize.captured.tables.changelog.enabled：采用多线程对Binlog文件进行解析、并按顺序投放到消费队列。
+
+优化Debezium参数
+
+ 
+debezium.max.queue.size: 162580
+debezium.max.batch.size: 40960
+debezium.poll.interval.ms: 50
+debezium.max.queue.size：阻塞队列可以容纳的记录的最大数量。当Debezium从数据库读取事件流时，它会在将事件写入下游之前将它们放入阻塞队列。默认值为8192。
+
+debezium.max.batch.size：该连接器每次迭代处理的事件条数最大值。默认值为2048。
+
+debezium.poll.interval.ms：连接器应该在请求新的变更事件前等待多少毫秒。默认值为1000毫秒，即1秒。
+```
+
+另外在flink-cdc代码中也能看到，如果开启相关配置，会在进入binlog模式时关闭不需要的reader
+
+在MySqlSourceEnumerator.java MySqlSourceEnumerator#assignSplits中
+
+```
+if (shouldCloseIdleReader(nextAwaiting)) {
+        // close idle readers when snapshot phase finished.
+        context.signalNoMoreSplits(nextAwaiting);
+        awaitingReader.remove();
+        LOG.info("Close idle reader of subtask {}", nextAwaiting);
+        continue;
+}
+```
+
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
 
