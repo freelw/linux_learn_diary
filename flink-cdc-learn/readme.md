@@ -298,29 +298,29 @@ private SchemaChangeResponse requestSchemaChange(
 ### glimpse 中没有说清楚的点
 1. schema变更消息会在每个并发度的源头都会产生吗？
 
-        ~~ 回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetadataApplier）的响应 ~~
-        更正回答：不是的，在values sink的stdout输出中我们可以看到对于schema变更消息，有两份输出，这时因为，在schemaOperator之后紧跟了一个PrePartition算子
+~~ 回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetadataApplier）的响应 ~~
+更正回答：不是的，在values sink的stdout输出中我们可以看到对于schema变更消息，有两份输出，这时因为，在schemaOperator之后紧跟了一个PrePartition算子
         
-        其中的processElement 实现如下 在PrePartitionOperator.java
+其中的processElement 实现如下 在PrePartitionOperator.java
         
-        ```
-        public void processElement(StreamRecord<Event> element) throws Exception {
-                Event event = element.getValue();
-                if (event instanceof SchemaChangeEvent) {
-                // Update hash function
-                TableId tableId = ((SchemaChangeEvent) event).tableId();
-                cachedHashFunctions.put(tableId, recreateHashFunction(tableId));
-                // Broadcast SchemaChangeEvent
-                broadcastEvent(event);
-                } else if (event instanceof FlushEvent) {
-                // Broadcast FlushEvent
-                broadcastEvent(event);
-                } else if (event instanceof DataChangeEvent) {
-                // Partition DataChangeEvent by table ID and primary keys
-                partitionBy(((DataChangeEvent) event));
-                }
+```
+public void processElement(StreamRecord<Event> element) throws Exception {
+        Event event = element.getValue();
+        if (event instanceof SchemaChangeEvent) {
+        // Update hash function
+        TableId tableId = ((SchemaChangeEvent) event).tableId();
+        cachedHashFunctions.put(tableId, recreateHashFunction(tableId));
+        // Broadcast SchemaChangeEvent
+        broadcastEvent(event);
+        } else if (event instanceof FlushEvent) {
+        // Broadcast FlushEvent
+        broadcastEvent(event);
+        } else if (event instanceof DataChangeEvent) {
+        // Partition DataChangeEvent by table ID and primary keys
+        partitionBy(((DataChangeEvent) event));
         }
-        ```
+}
+```
 
         可以看到对于SchemaChangeEvent和FlushEvent是向下游广播的，所以values sink中才会有多份打印
 ### 总结
