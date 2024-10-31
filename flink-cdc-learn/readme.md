@@ -322,7 +322,8 @@ public void processElement(StreamRecord<Event> element) throws Exception {
 }
 ```
 
-        可以看到对于SchemaChangeEvent和FlushEvent是向下游广播的，所以values sink中才会有多份打印
+ 可以看到对于SchemaChangeEvent和FlushEvent是向下游广播的，所以values sink中才会有多份打印
+
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
 
