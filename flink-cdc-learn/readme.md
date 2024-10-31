@@ -492,3 +492,5 @@ flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上�
 4. 恢复运行
 
 这样实现了自动schema变更
+
+多并发会加速存量数据的同步，增量数据的读取还是只能通过一个并发
