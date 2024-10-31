@@ -388,6 +388,23 @@ public void processElement(StreamRecord<Event> element) throws Exception {
 
 这很合理，因为在执行mysql语句`show master status`的时候，也只会返回一个活跃的binglog信息，作为消费者，只有单线程串行读才是正确行为
 
+3. 上面说的是通过binlog读取增量数据的逻辑，对于存量的大量数据，多source并发有意义吗？
+
+回答：有意义。
+
+首先需要明确source的实现架构 [FLIP-27](https://cwiki.apache.org/confluence/display/FLINK/FLIP-27%3A+Refactor+Source+Interface)
+
+在`Top level public interfaces`这一小节描述了关键接口的含义，我们挑选出最重要的三个
+
+```
+Source - A factory style class that helps create SplitEnumerator and SourceReader at runtime.
+...
+SplitEnumerator - Discover the splits and assign them to the SourceReaders
+...
+SourceReader - Read the records from the splits assigned by the SplitEnumerator.
+```
+![](img/image9.png)
+
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
 
