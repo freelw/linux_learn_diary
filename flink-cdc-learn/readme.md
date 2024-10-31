@@ -403,7 +403,7 @@ SplitEnumerator - Discover the splits and assign them to the SourceReaders
 ...
 SourceReader - Read the records from the splits assigned by the SplitEnumerator.
 ```
-![](img/image9.png)
+![](img/image10.png)
 
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
