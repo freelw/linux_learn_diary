@@ -1,4 +1,4 @@
-# Flink-cdc Schema Evolution 详解
+# Flink CDC Schema Evolution 详解
 
 ### glimpse
 [flink-cdc-3 glimpse](https://medium.com/@ipolyzos_/a-glimpse-into-flink-cdc-3-0-a985fb5895a5)
