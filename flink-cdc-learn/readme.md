@@ -299,6 +299,7 @@ private SchemaChangeResponse requestSchemaChange(
 1. schema变更消息会在每个并发度的源头都会产生吗？
 
 ~~ 回答：是的，只有这样SchemaOperator才有机会正确的hang住所有的并发度，并等待SchemaRegistry（MetadataApplier）的响应 ~~
+
 更正回答：不是的，在values sink的stdout输出中我们可以看到对于schema变更消息，有两份输出，这时因为，在schemaOperator之后紧跟了一个PrePartition算子
         
 其中的processElement 实现如下 在PrePartitionOperator.java
@@ -322,7 +323,28 @@ public void processElement(StreamRecord<Event> element) throws Exception {
 }
 ```
 
- 可以看到对于SchemaChangeEvent和FlushEvent是向下游广播的，所以values sink中才会有多份打印
+可以看到对于SchemaChangeEvent和FlushEvent是向下游广播的，所以values sink中才会有多份打印
+
+2. 接上一个问题，如果多个source都有可能产生data change event，而一次schema变更只在一个source上产生，是如何保证正确性的呢？
+
+简单想想一个有问题的场景，比如消息1、2、3是datachange消息，s是schema change消息，发生的时间顺序是1 s 2 3，
+
+但是由于并发度是2，这时有可能在s执行之前，2先执行了，这时就出现了逻辑问题，因为2是依赖变更后的schema
+
+```
+┌─────────────┐                              ┌───────────────┐
+│             │         ┌──┐    ┌──┐  ┌──┐   │               │
+│   source1   ├─────────┼ 3┼────┼ s┼──┼ 1│──►│ schemaOprator │
+│             │         └──┘    └──┘  └──┘   │               │
+└─────────────┘                              └───────────────┘
+                                                              
+                                                              
+┌─────────────┐                              ┌───────────────┐
+│             │               ┌───┐          │               │
+│   source2   ├───────────────┼  2┼─────────►│ schemaOprator │
+│             │               └───┘          │               │
+└─────────────┘                              └───────────────┘
+```
 
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
