@@ -420,7 +420,7 @@ SourceReader - Read the records from the splits assigned by the SplitEnumerator.
 1. 存量数据读取阶段
 2. 增量数据读取阶段
 
-在存量读取阶段，实际上是实用了MySqlSnapshotSplitAssigner的能力
+在存量读取阶段，实际上是用了MySqlSnapshotSplitAssigner的能力
 
 在MySqlSnapshotSplitAssigner.java的开头有一段描述
 
