@@ -329,7 +329,7 @@ public void processElement(StreamRecord<Event> element) throws Exception {
 
 简单想想一个有问题的场景，比如读取的binlog中消息1、2、3是datachange消息，s是schema change消息，发生的时间顺序是1 s 2 3，
 
-但是由于并发度是2，这时有可能在s执行之前，2先执行了，这时就出现了逻辑问题，因为2是依赖变更后的schema
+但是由于并发度是2，这时有可能在s执行之前，2先执行了，这时就出现了逻辑问题，因为2是依赖变更后的schema， 2不可以先于s执行
 
 ```
 ┌─────────────┐                              ┌───────────────┐
@@ -345,6 +345,48 @@ public void processElement(StreamRecord<Event> element) throws Exception {
 │             │               └───┘          │               │
 └─────────────┘                              └───────────────┘
 ```
+针对这个问题，flink-cdc的做法是，binlogsplit只有一个subTask在读取，可以看MySqlSourceEnumerator->MySqlSnapshotSplitAssigner->MySqlHybridSplitAssigner#getNext
+
+```
+@Override
+    public Optional<MySqlSplit> getNext() {
+        if (AssignerStatus.isNewlyAddedAssigningSnapshotFinished(getAssignerStatus())) {
+            // do not assign split until the adding table process finished
+            return Optional.empty();
+        }
+        if (snapshotSplitAssigner.noMoreSplits()) {
+            // binlog split assigning
+            if (isBinlogSplitAssigned) {
+                // no more splits for the assigner
+                return Optional.empty();
+            } else if (AssignerStatus.isInitialAssigningFinished(
+                    snapshotSplitAssigner.getAssignerStatus())) {
+                // we need to wait snapshot-assigner to be finished before
+                // assigning the binlog split. Otherwise, records emitted from binlog split
+                // might be out-of-order in terms of same primary key with snapshot splits.
+                isBinlogSplitAssigned = true;
+                return Optional.of(createBinlogSplit());
+            } else if (AssignerStatus.isNewlyAddedAssigningFinished(
+                    snapshotSplitAssigner.getAssignerStatus())) {
+                // do not need to create binlog, but send event to wake up the binlog reader
+                isBinlogSplitAssigned = true;
+                return Optional.empty();
+            } else {
+                // binlog split is not ready by now
+                return Optional.empty();
+            }
+        } else {
+            // snapshot assigner still have remaining splits, assign split from it
+            return snapshotSplitAssigner.getNext();
+        }
+    }
+```
+
+注意这里面isBinlogSplitAssigned如果被设置一次了，就不会再调用createBinlogSplit，所以在flink没有异常重启的情况下，createBinlogSplit只会被调用一次
+
+也就是说，只有一个subTask能拿到binlogsplit
+
+这很合理，因为在执行mysql语句`show master status`的时候，也只会返回一个活跃的binglog信息，作为消费者，只有单线程串行读才是正确行为
 
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
