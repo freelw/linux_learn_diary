@@ -473,7 +473,7 @@ debezium.poll.interval.ms：连接器应该在请求新的变更事件前等待�
 
 ~~在MySqlSourceEnumerator.java MySqlSourceEnumerator#assignSplits中~~
 
-下面代码在BOUNDED模式切开启scan.incremental.close-idle-reader.enabled才生效
+下面代码在BOUNDED模式并且开启scan.incremental.close-idle-reader.enabled才生效
 
 ```
 if (shouldCloseIdleReader(nextAwaiting)) {
