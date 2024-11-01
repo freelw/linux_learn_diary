@@ -469,9 +469,11 @@ debezium.max.batch.size：该连接器每次迭代处理的事件条数最大值
 debezium.poll.interval.ms：连接器应该在请求新的变更事件前等待多少毫秒。默认值为1000毫秒，即1秒。
 ```
 
-另外在flink-cdc代码中也能看到，如果开启相关配置，会在进入binlog模式时关闭不需要的reader
+~~另外在flink-cdc代码中也能看到，如果开启相关配置，会在进入binlog模式时关闭不需要的reader~~
 
-在MySqlSourceEnumerator.java MySqlSourceEnumerator#assignSplits中
+~~在MySqlSourceEnumerator.java MySqlSourceEnumerator#assignSplits中~~
+
+下面代码在BOUNDED模式切开启scan.incremental.close-idle-reader.enabled才生效
 
 ```
 if (shouldCloseIdleReader(nextAwaiting)) {
