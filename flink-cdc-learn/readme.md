@@ -485,6 +485,14 @@ if (shouldCloseIdleReader(nextAwaiting)) {
 }
 ```
 
+#### 同步原理
+
+https://github.com/apache/flink-cdc/issues/75
+
+```
+MySQL binlog 数据同步的原理是，CDC source 会伪装成 MySQL 集群的一个 slave（使用指定的 server id 作为唯一 id），然后从 MySQL 拉取 binlog 数据。如果一个 MySQL 集群中有多个 slave 有同样的 id，就会导致拉取数据错乱的问题。
+```
+
 ### 总结
 flink-cdc 3.0 通过加入了SchemaOperator和MetadataApplier，监控链路上所有消息，当发生schema变更时，同步上下游
 
