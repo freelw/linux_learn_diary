@@ -297,3 +297,7 @@
 * 20241022
 
     [flink-cdc schema evolution 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-cdc-learn)
+
+* 20241107
+
+    [gdb pretty print demo](https://github.com/freelw/gdbprettyprintdemo)
