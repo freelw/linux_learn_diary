@@ -4,9 +4,9 @@
 
 在flink-cdc 3.0中引入了pipeline机制，提供了除Datastream api/flink sql以外的一种方式定义flink 任务
 
-主要的形式是提供一个yaml文件，描述source sink transform等主要信息
+通过提供一个yaml文件，描述source sink transform等主要信息
 
-由FlinkPipelineComposer解析，自动调用DataStream api构建任务
+由FlinkPipelineComposer解析，自动调用DataStream api进行构建
 
 [官方样例](https://nightlies.apache.org/flink/flink-cdc-docs-master/zh/docs/core-concept/data-pipeline/)
 
@@ -186,7 +186,10 @@ return new FlinkPipelineExecution(env...)
 
 逐一说明
 1. sourceTranslator.translate 通过source名字获取sourceProvider，关联到stream中
-  * cli的逻辑中我们会看到很多provider的逻辑，这是因为具体执行时并不是在cli所在的机器上，而是在taskManager上，也就是worker节点上，这里只能告诉flink构建source的Factory，而不是source实例。这样在worker上flink才知道如何构建source
+  * sourceProvider.getSource ->
+    * MysqlSource ->
+      * createReader
+      * createEnumerator
 
 2. stream = transformTranslator.translatePreTransform 
   ```
@@ -215,6 +218,4 @@ return new FlinkPipelineExecution(env...)
   * 构建sink节点
 
 7. FlinkPipelineExecution 中的 execute 方法调用 `env.executeAsync(jobName)`
-
-### 深入解析source
 
