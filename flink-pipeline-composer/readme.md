@@ -61,7 +61,6 @@ source:
  username: username
  password: password
  tables: test.t1
- #tables: test.\.*
  server-id: 5400-5404
  server-time-zone: UTC+8
 
@@ -73,3 +72,20 @@ pipeline:
  name: Sync Mysql Database to Values
  parallelism: 2
 ```
+
+首先来观察一下这个任务提交到flink集群后具体的链路构成
+
+![1](image.png)
+
+结合官方给出的架构
+
+![alt text](image-1.png)
+
+可以看出，我们的“一个source，一个sink”的定义，最终会生成5个operator
+
+1. Souce: Flink CDC Event Source: mysql
+2. SchemaOperator
+3. PrePartition
+-------------- shuffle --------------
+4. PostPartion
+5. Sink Writer: values Sink
