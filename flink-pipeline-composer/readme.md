@@ -1,4 +1,4 @@
-# flink-pipeline-composer 详解
+# FlinkPipelineComposer 详解
 
 ## 背景
 
