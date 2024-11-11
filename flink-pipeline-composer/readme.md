@@ -178,6 +178,10 @@ stream =
                   ...
 sinkTranslator.translate(
                 pipelineDef.getSink(), stream, dataSink, schemaOperatorIDGenerator.generate());
+
+return new FlinkPipelineExecution(env...)
+                  ...
+
 ```
 
 逐一说明
@@ -209,4 +213,8 @@ sinkTranslator.translate(
 
 6. sinkTranslator.translate
   * 构建sink节点
+
+7. FlinkPipelineExecution 中的 execute 方法调用 `env.executeAsync(jobName)`
+
+### 深入解析source
 
