@@ -219,3 +219,9 @@ return new FlinkPipelineExecution(env...)
 
 7. FlinkPipelineExecution 中的 execute 方法调用 `env.executeAsync(jobName)`
 
+### 总结
+
+flink-cdc 3.0 提供的pipeline模式，通过定义yaml，自动构建了一条cdc pipeline，避免手动调用datastream api，并且支持schema evolution
+
+构建的主要逻辑集中在 FlinkPipelineComposer
+
