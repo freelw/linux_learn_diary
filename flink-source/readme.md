@@ -44,8 +44,17 @@ Source 作为工厂类，会创建以下两个重要部件
             void wakeUp();
         }
         ```
+        1. fetch 获取数据，这里是包含了split信息的record
+        2. 响应split改变
+        3. 唤醒
 
-3. 由于通信使用mail风格的rpc（单线程串行），响应函数需要保证非阻塞，所以后面可以看到无论enumerator还是reader的最终响应都是在异步线程池中
+3. Emitter
+    1. The RecordsWithSplitIds returned by the SplitReader will be passed to an RecordEmitter one by one.
+    2. The RecordEmitter is responsible for the following:
+        * Convert the raw record type <E> into the eventual record type <T>
+        * Provide an event time timestamp for the record that it processes.
+
+4. 由于通信使用mail风格的rpc（单线程串行），响应函数需要保证非阻塞，所以后面可以看到无论enumerator还是reader的最终响应都是在异步线程池中
 
     ```
     Non-blocking progress methods, to it supports running in an actor/mailbox/dispatcher style operator
