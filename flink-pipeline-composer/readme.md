@@ -190,5 +190,6 @@ sinkTranslator.translate(
           }
   ```
   由于有如上代码，我们的yaml中没有涉及，所以忽略这个transform
+
 3. stream = transformTranslator.translatePostTransform
   同上
