@@ -54,7 +54,7 @@ Source 作为工厂类，会创建以下两个重要部件
         * Convert the raw record type <E> into the eventual record type <T>
         * Provide an event time timestamp for the record that it processes.
 
-由于通信使用mail风格的rpc（单线程串行），响应函数需要保证非阻塞，所以后面可以看到无论enumerator还是reader的最终响应都是在异步线程池中
+由于通信使用mail风格的rpc（单线程串行），所以响应函数需要保证非阻塞，所以后面可以看到无论enumerator还是reader的最终响应都是在异步线程池中
 
 ```
 Non-blocking progress methods, to it supports running in an actor/mailbox/dispatcher style operator
