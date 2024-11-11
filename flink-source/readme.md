@@ -33,6 +33,19 @@ Source 作为工厂类，会创建以下两个重要部件
         ![alt text](image-1.png)
         ![alt text](image-2.png)
         ![alt text](image-3.png)
+    * 使用了抽象后的类，开发者的关注点集中在
+        ```
+        public interface SplitReader<E, SplitT extends SourceSplit> {
+ 
+            RecordsWithSplitIds<E> fetch() throws InterruptedException;
+        
+            void handleSplitsChanges(Queue<SplitsChange<SplitT>> splitsChanges);
+        
+            void wakeUp();
+        }
+        ```
+
+3. 由于通信使用mail架构，响应函数需要保证 1. 串行 2. 非阻塞，所以后面可以看到无论enumerator还是reader的最终响应都是在异步线程池中
 
 ## MysqlSource 举例
 
