@@ -57,7 +57,6 @@ Source 作为工厂类，会创建以下两个重要部件
 ```
 Non-blocking progress methods, to it supports running in an actor/mailbox/dispatcher style operator
 ```
-    
 
 ## MysqlSource 举例
 
@@ -83,6 +82,8 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
                     2. 通过 createBinlogSplit 创建增量数据的split
                         * 只assign一次binlog的split
         ![alt text](1.jpg)
+    * createReader
+        * MySqlSourceReader
 
 
 
