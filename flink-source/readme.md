@@ -48,7 +48,7 @@ Source 作为工厂类，会创建以下两个重要部件
         2. 响应split改变
         3. 唤醒
 
-3. Emitter
+3. RecordEmitter
     1. The RecordsWithSplitIds returned by the SplitReader will be passed to an RecordEmitter one by one.
     2. The RecordEmitter is responsible for the following:
         * Convert the raw record type <E> into the eventual record type <T>
