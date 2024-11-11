@@ -91,3 +91,25 @@ pipeline:
 
 4. PostPartion
 5. Sink Writer: values Sink
+
+### Souce: Flink CDC Event Source: mysql
+负责
+1.创建枚举器
+2.创建reader
+3.枚举split分发给reader
+4.reader读取数据生成事件
+
+### SchemaOperator
+负责和JobMaster上的coodinator沟通，执行schema evolution 相关逻辑，见[Flink CDC Schema Evolution 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-cdc-learn)
+
+### PrePartition
+负责
+1. 广播FlushEvent
+2. 广播SchemaChangeEvent
+3. shuffle普通消息到下游
+
+### PostPartion
+
+### Sink Writer: values Sink
+
+写入下游，values sink当前到实现是打印到stdout
