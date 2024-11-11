@@ -8,12 +8,12 @@ FLIP-27 介绍了新版本Source 接口定义及架构
 
 ![alt text](image.png)
 
-重要组件
-
-Source 作为工厂类
-1. createEnumerator
-    * 创建 Enumerator
-    * Enumerator 响应request split请求, 工作在JobMaster(官方描述如下)
+Source 作为工厂类，会创建以下两个重要部件
+1. SplitEnumerator 
+    * 通过createEnumerator创建
+    * SplitEnumerator 响应request split请求
+        * handleSplitRequest
+    * 工作在JobMaster(官方描述如下)
 
         ```
         Where to run the enumerator
@@ -22,4 +22,11 @@ Source 作为工厂类
         Each SplitEnumerator will be encapsulated in one SourceCoordinator. If there are multiple sources, multiple SourceCoordinator will there be. The SourceCoordinators will run in the JobMaster, but not as part of the ExecutionGraph. In this FLIP, we propose to failover the entire execution graph when the SplitEnumerator fails. A finer grained enumerator failover will be proposed in a later FLIP.
         ```
 
-2. createReader
+2. SourceReader
+    * 通过createReader创建
+    * 工作在worker
+    * 由于单独实现SourceReader过于复杂，官方抽象了3种比较通用的模型供开发者使用
+        a. Sequential Single Split (File, database query, most bounded splits)
+        b. Multi-split multiplexed (Kafka, Pulsar, Pravega, ...)
+        c. Multi-split multi-threaded (Kinesis, ...)
+
