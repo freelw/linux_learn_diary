@@ -86,6 +86,8 @@ pipeline:
 1. Souce: Flink CDC Event Source: mysql
 2. SchemaOperator
 3. PrePartition
+
 -------------- shuffle --------------
+
 4. PostPartion
 5. Sink Writer: values Sink
