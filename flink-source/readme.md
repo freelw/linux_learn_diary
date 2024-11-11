@@ -4,7 +4,7 @@
 
 FLIP-27 介绍了新版本Source 接口定义及架构
 
-相比于SourceFunction，新版本的Source更具灵活性，原因是将splits数据获取与真正数据获取逻辑进行了分离
+相比于SourceFunction，新版本的Source更具灵活性，原因是将“splits数据获取”与真“正数据获取”逻辑进行了分离
 
 ![alt text](image.png)
 
