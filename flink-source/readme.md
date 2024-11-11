@@ -8,6 +8,7 @@ FLIP-27 介绍了新版本Source 接口定义及架构
 
 ![alt text](image.png)
 
+## 重要部件
 Source 作为工厂类，会创建以下两个重要部件
 1. SplitEnumerator 
     * 通过createEnumerator创建
@@ -25,10 +26,19 @@ Source 作为工厂类，会创建以下两个重要部件
 2. SourceReader
     * 通过createReader创建
     * 工作在worker
-    * 由于单独实现SourceReader过于复杂，官方抽象了3种比较通用的模型供开发者使用
+    * 由于单独实现SourceReader过于复杂，官方抽象了3种比较通用的模型供开发者使用，`MySqlSourceReader`就是继承了`SingleThreadMultiplexSourceReaderBase`
         1. Sequential Single Split (File, database query, most bounded splits)
         2. Multi-split multiplexed (Kafka, Pulsar, Pravega, ...)
         3. Multi-split multi-threaded (Kinesis, ...)
         ![alt text](image-1.png)
         ![alt text](image-2.png)
         ![alt text](image-3.png)
+
+## MysqlSource 举例
+
+
+
+
+## 其他
+
+no watermark
