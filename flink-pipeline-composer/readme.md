@@ -204,7 +204,7 @@ return new FlinkPipelineExecution(env...)
 
 4. stream = schemaOperatorTranslator.translate
   * 插入一个schemaOperator节点，在收到schemaChangeEvent的时候
-    1. 停住当前刘
+    1. 停住当前流
     2. 上报coodinator
     3. flush下游数据，让sink消耗完已有数据
     4. sink 通知coodinator flush完成
