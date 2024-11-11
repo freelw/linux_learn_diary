@@ -47,6 +47,10 @@ Source 作为工厂类，会创建以下两个重要部件
 
 3. 由于通信使用mail架构，响应函数需要保证 1. 串行 2. 非阻塞，所以后面可以看到无论enumerator还是reader的最终响应都是在异步线程池中
 
+    ```
+    Non-blocking progress methods, to it supports running in an actor/mailbox/dispatcher style operator
+    ```
+
 ## MysqlSource 举例
 
 
