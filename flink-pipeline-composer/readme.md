@@ -122,3 +122,66 @@ pipeline:
 
 接下来分析，FlinkPipelineComposer 读取 yaml 构造DataStream的细节
 
+### CliFrontend#main
+
+CliFrontend.java:54
+
+args
+
+![alt text](image-2.png)
+
+createExecutor 创建 executor CliFrontend.java:76
+
+调用CliExecutor#run CliExecutor.java:70
+
+看一下解析得到的pipelineDef
+
+![alt text](image-3.png)
+
+这里已经从yaml文件中解析出了source和sink的配置了
+
+composer.compose 调用compose方法开始使用DataStream api进行构建
+
+FlinkPipelineComposer.java:92 FlinkPipelineComposer#compose
+
+声明了5个translator，其中第一个sourceTranslator会生成`DataStream<Event> stream`，而其他的translator基于这个stream作为input，调用transform方法，放入对应阶段的operator
+
+```
+DataSourceTranslator sourceTranslator = new DataSourceTranslator();
+...
+TransformTranslator transformTranslator = new TransformTranslator();
+...
+SchemaOperatorTranslator schemaOperatorTranslator =...
+...
+DataSinkTranslator sinkTranslator = new DataSinkTranslator();
+...
+PartitioningTranslator partitioningTranslator = new PartitioningTranslator();
+...
+```
+
+translate的调用顺序如下
+```
+DataStream<Event> stream =
+                sourceTranslator.translate(
+                  ...
+stream =
+                transformTranslator.translatePreTransform(
+                  ...
+stream =
+                transformTranslator.translatePostTransform(
+                  ...
+stream =
+                schemaOperatorTranslator.translate(
+                  ...
+stream =
+                partitioningTranslator.translate(
+                  ...
+sinkTranslator.translate(
+                pipelineDef.getSink(), stream, dataSink, schemaOperatorIDGenerator.generate());
+```
+
+逐一说明
+1. sourceTranslator.translate 通过source名字获取sourceProvider，关联到stream中
+  * cli的逻辑中我们会看到很多provider的逻辑，这是因为具体执行时并不是在cli所在的机器上，而是在taskManager上，也就是worker节点上，这里只能告诉flink构建source的Factory，而不是source实例。这样在worker上flink才知道如何构建source
+
+
