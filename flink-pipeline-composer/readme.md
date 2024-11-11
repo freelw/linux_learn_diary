@@ -183,6 +183,7 @@ sinkTranslator.translate(
 逐一说明
 1. sourceTranslator.translate 通过source名字获取sourceProvider，关联到stream中
   * cli的逻辑中我们会看到很多provider的逻辑，这是因为具体执行时并不是在cli所在的机器上，而是在taskManager上，也就是worker节点上，这里只能告诉flink构建source的Factory，而不是source实例。这样在worker上flink才知道如何构建source
+
 2. stream = transformTranslator.translatePreTransform 
   ```
   if (transforms.isEmpty()) {
@@ -193,3 +194,19 @@ sinkTranslator.translate(
 
 3. stream = transformTranslator.translatePostTransform
   * 同上
+
+4. stream = schemaOperatorTranslator.translate
+  * 插入一个schemaOperator节点，在收到schemaChangeEvent的时候
+    1. 停住当前刘
+    2. 上报coodinator
+    3. flush下游数据，让sink消耗完已有数据
+    4. sink 通知coodinator flush完成
+    5. coodinator调用sink注册的MetaApplier完成schema变更，变更完成后通知schemaOperator
+    6. schemaOperator重新放通数据
+
+5. stream = partitioningTranslator.translate
+  * 构建prePartition postPartition节点
+
+6. sinkTranslator.translate
+  * 构建sink节点
+
