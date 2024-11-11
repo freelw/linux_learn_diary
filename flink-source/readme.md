@@ -30,3 +30,5 @@ Source 作为工厂类，会创建以下两个重要部件
         2. Multi-split multiplexed (Kafka, Pulsar, Pravega, ...)
         3. Multi-split multi-threaded (Kinesis, ...)
         ![alt text](image-1.png)
+        ![alt text](image-2.png)
+        ![alt text](image-3.png)
