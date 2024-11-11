@@ -81,7 +81,7 @@ pipeline:
 
 ![alt text](image-1.png)
 
-可以看出，我们的“一个source，一个sink”的定义，最终会生成5个operator
+可以看出，“一个source，一个sink”的yaml定义，最终会生成5个operator
 
 1. Souce: Flink CDC Event Source: mysql
 2. SchemaOperator
@@ -113,3 +113,8 @@ pipeline:
 ### Sink Writer: values Sink
 
 写入下游，values sink当前到实现是打印到stdout
+
+## 源码解析
+
+接下来分析，FlinkPipelineComposer 读取 yaml 构造DataStream的细节
+
