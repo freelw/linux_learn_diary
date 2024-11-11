@@ -14,7 +14,7 @@ Source 作为工厂类，会创建以下两个重要部件
     * 通过createEnumerator创建
     * SplitEnumerator 响应request split请求
         * handleSplitRequest
-    * 工作在JobMaster(官方描述如下)
+    * 工作在SourceCoordinator (官方描述如下)，可以理解为在JobMaster上运行一个单线程的逻辑，所以需要跟在worker上的reader通过rpc通信
 
         ```
         Where to run the enumerator
