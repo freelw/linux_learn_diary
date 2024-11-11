@@ -29,4 +29,4 @@ Source 作为工厂类，会创建以下两个重要部件
         1. Sequential Single Split (File, database query, most bounded splits)
         2. Multi-split multiplexed (Kafka, Pulsar, Pravega, ...)
         3. Multi-split multi-threaded (Kinesis, ...)
-
+        ![alt text](image-1.png)
