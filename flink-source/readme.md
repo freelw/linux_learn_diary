@@ -72,6 +72,7 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
             * assignSplits
                 * splitAssigner.getNext()
                     * 从 remainingSplits 拿一个可用的split
+        * 调用 context.assignSplit 发送 AddSplitEvent
         * MySqlSourceEnumerator 中 splitAssigner 的实现说明
             * splitAssigner 默认实现是 MySqlHybridSplitAssigner
                 * hybrid的含义，启动分为两个步骤 1. 读取全量数据 2. 全量数据读取完毕后读取增量数据。将两种模式混合在一起被称为hybird。所以MySqlSnapshotSplitAssigner可以创建两种split
@@ -83,10 +84,23 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
                         * 只assign一次binlog的split
                         * 只能分发给一个reader，所以在进入增量模式后flink实际所有并行度上只有一个source有数据
         ![alt text](1.jpg)
-    * createReader
-        * MySqlSourceReader
-
-
+    * 通过 createReader 创建 MySqlSourceReader
+        * 创建 SingleThreadFetcherManager 传入 elementQueue splitReaderSupplier
+            * elementQueue: io线程和主线程公用队列，io线程写，主线程读
+            * splitReaderSupplier: split reader的工厂
+            * SingleThreadFetcherManager 启动后创建线程池
+        * sourceOperator 收到 AddSplitEvent 调用 sourceReader.addSplits 这里 sourceReader 是 MySqlSourceReader
+            * readerBase 中会调用 splitFetcherManager.addSplits(splits);
+                * 由于使用的是 SingleThreadFetcherManager，所以addSplits中永远看到只同时存在一个fetcher
+                    * fetcher 初始化时加入默认任务 FetchTask 构造的时候传入 elementQueue 传入构造好的 splitReader
+                    * fetcher addSplits时加入任务 AddSplitsTask
+                    * fetcher 启动时调用 startFetcher
+                        * 调用 executors.submit(fetcher); 提交到线程池
+                        * 线程池中运行 runOnce
+                            * FetchTask 调用 splitReader.fetch() 获取records 写入 elementQueue
+        * SourceReaderBase 中的 pollNext 会被框架调用
+            * 调用 getNextFetch
+                * elementsQueue.poll() 取得 records
 
 ## 其他
 
