@@ -63,24 +63,25 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
 以flink cdc中的MysqlSource来举例分析
 
 1. MysqlSource
-    * createEnumerator
-        * MySqlSourceEnumerator 
-            * 初始化调用open 
+    * 通过 createEnumerator 创建 MySqlSourceEnumerator
+        * 初始化调用start
+            * 调用splitAssigner.open()
                 * splitAssigner 是获取/分配split动作的真正实现
-                    * 调用splitAssigner.open()
-                        * 创建异步线程，填充remainingSplits
-                    * 主线程通过getNext获取最新的split
-            * handleSplitRequest 响应空闲worker的请求
-                * assignSplits
-                    * splitAssigner.getNext()
-                        * 从 remainingSplits 拿一个可用的split
+                    * 创建异步线程，填充remainingSplits
+        * handleSplitRequest 响应空闲worker的请求
+            * assignSplits
+                * splitAssigner.getNext()
+                    * 从 remainingSplits 拿一个可用的split
         * MySqlSourceEnumerator 中 splitAssigner 的实现说明
             * splitAssigner 默认实现是 MySqlHybridSplitAssigner
-                * hybrid的含义，启动分为两个步骤 1. 读取全量数据 2. 全量数据读取完毕后读取增量数据。所以MySqlSnapshotSplitAssigner可以创建两种split
-                    1. 通过MySqlSnapshotSplitAssigner创建全量数据的split
-                        * 在读取全量数据时通过chunckSplitter多线程并行读取
+                * hybrid的含义，启动分为两个步骤 1. 读取全量数据 2. 全量数据读取完毕后读取增量数据。将两种模式混合在一起被称为hybird。所以MySqlSnapshotSplitAssigner可以创建两种split
+                    1. 通过MySqlSnapshotSplitAssigner创建存量数据的split
+                        * 在读取存量数据时通过chunkSplitter切分为多个split，之后分发给多个reader并行读取
+                            * chunkSplitter 通过 chunkKey 的范围将存量数据切分
+                            * 用户可以手动设置chunkKey，否则使用主key作为chunkKey，切分split
                     2. 通过 createBinlogSplit 创建增量数据的split
                         * 只assign一次binlog的split
+                        * 只能分发给一个reader，所以在进入增量模式后flink实际所有并行度上只有一个source有数据
         ![alt text](1.jpg)
     * createReader
         * MySqlSourceReader
