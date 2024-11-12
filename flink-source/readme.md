@@ -98,9 +98,10 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
                         * 调用 executors.submit(fetcher); 提交到线程池
                         * 线程池中运行 runOnce
                             * FetchTask 调用 splitReader.fetch() 获取records 写入 elementQueue
-        * SourceReaderBase 中的 pollNext 会被框架调用
+        * 主线程 SourceReaderBase 中的 pollNext 会被框架调用
             * 调用 getNextFetch
                 * elementsQueue.poll() 取得 records
+        ![alt text](2.jpg)
 
 ## 其他
 
