@@ -105,6 +105,8 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
 
 ## 其他
 
+在Flink CDC 3.0 中
+
 Flink Composer 中使用 WatermarkStrategy.noWatermarks()
 ```
  return env.fromSource(
