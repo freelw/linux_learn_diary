@@ -30,7 +30,7 @@ Source 作为工厂类，会创建以下两个重要部件
         ![alt text](image-1.png)
         ![alt text](image-2.png)
         ![alt text](image-3.png)
-    * 使用了抽象后的类，开发者的关注点集中在
+    * 使用了抽象后的类，开发者的关注点集中在实现一个SplitReader
         ```
         public interface SplitReader<E, SplitT extends SourceSplit> {
  
