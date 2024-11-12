@@ -105,4 +105,14 @@ Non-blocking progress methods, to it supports running in an actor/mailbox/dispat
 
 ## 其他
 
-no watermark
+Flink Composer 中使用 WatermarkStrategy.noWatermarks()
+```
+ return env.fromSource(
+                            sourceProvider.getSource(),
+                            WatermarkStrategy.noWatermarks(),
+                            sourceDef.getName().orElse(generateDefaultSourceName(sourceDef)),
+                            new EventTypeInfo())
+                    .setParallelism(sourceParallelism);
+```
+
+很合理，因为pipeline的定义中不会出现聚合函数 window函数
