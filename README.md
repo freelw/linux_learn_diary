@@ -304,8 +304,6 @@
 
 * 20241114
 
-    [Flink CDC Schema Evolution 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-cdc-learn)
-
     [FlinkPipelineComposer 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-pipeline-composer)
 
     [Flink Source 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-source)
