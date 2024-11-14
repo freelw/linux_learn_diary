@@ -7,7 +7,7 @@
 ## 检查host软件环境
 
 [检查host软件环境](https://www.linuxfromscratch.org/lfs/view/stable/chapter02/hostreqs.html)
-[version-check.sh](https://gitee.com/freelw/linux_learn_diary/tree/master/lfs/version-check.sh)
+[version-check.sh](https://github.com/freelw/linux_learn_diary/tree/master/lfs/version-check.sh)
 
 ## 配置$LFS环境变量
 

@@ -16,7 +16,7 @@
 
         sudo dpkg -i code_1.54.3-1615806378_amd64.deb
 
-* [使用vs调试linux内核](https://howardlau.me/programming/debugging-linux-kernel-with-vscode-qemu.html) [done](https://gitee.com/freelw/vscode_linux_dbg_env)
+* [使用vs调试linux内核](https://howardlau.me/programming/debugging-linux-kernel-with-vscode-qemu.html) [done](https://github.com/freelw/vscode_linux_dbg_env)
 
 * [add-auto-load-safe-path的含义](https://sourceware.org/gdb/onlinedocs/gdb/Auto_002dloading-safe-path.html)
 
