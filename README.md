@@ -292,7 +292,7 @@
 
 * 20231107
 
-    [asan 内存定位工具使用](https://gitee.com/freelw/linux_learn_diary/tree/master/asan_test)
+    [asan 内存定位工具使用](https://github.com/freelw/linux_learn_diary/tree/master/asan_test)
 
 * 20241022
 
