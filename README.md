@@ -307,3 +307,7 @@
     [FlinkPipelineComposer 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-pipeline-composer)
 
     [Flink Source 详解](https://github.com/freelw/linux_learn_diary/tree/master/flink-source)
+
+* 20241211
+
+    [spark-sql 写 iceberg](https://github.com/freelw/linux_learn_diary/tree/master/spark-sql-iceberg)
