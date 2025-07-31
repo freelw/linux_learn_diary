@@ -311,3 +311,7 @@
 * 20241211
 
     [spark-sql 写 iceberg](https://github.com/freelw/linux_learn_diary/tree/master/spark-sql-iceberg)
+
+* 20250731
+    
+    [cmake 学习](cmake-play/readme.md)
