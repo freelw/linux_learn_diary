@@ -316,3 +316,4 @@
     
     [cmake 学习](cmake-play/readme.md)
     [ldconfig & so name](https://www.baeldung.com/linux/shared-object-filenames)
+    [ldconfig-playground](https://github.com/freelw/ldconfig-playground)
