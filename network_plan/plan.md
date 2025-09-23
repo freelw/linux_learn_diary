@@ -35,7 +35,27 @@ echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
 sysctl -p
 ```
 
-#### 2. 配置iptables NAT规则
+#### 2. 查看当前iptables规则
+
+```bash
+# 查看当前filter表规则
+iptables -L -n -v
+
+# 查看当前nat表规则
+iptables -t nat -L -n -v
+
+# 查看当前mangle表规则
+iptables -t mangle -L -n -v
+
+# 查看当前raw表规则
+iptables -t raw -L -n -v
+
+# 查看规则编号（便于删除特定规则）
+iptables -L --line-numbers
+iptables -t nat -L --line-numbers
+```
+
+#### 3. 配置iptables NAT规则
 
 ```bash
 # 清空现有规则（谨慎操作）
@@ -55,7 +75,7 @@ iptables -A FORWARD -s 192.168.2.0/24 -j ACCEPT
 iptables -A FORWARD -d 192.168.2.0/24 -j ACCEPT
 ```
 
-#### 3. 保存iptables规则
+#### 4. 保存iptables规则
 
 ```bash
 # Ubuntu/Debian系统
