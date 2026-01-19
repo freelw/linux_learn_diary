@@ -325,3 +325,7 @@
 * 20251202
 
     [k8s proxy](k8s/readme.md)
+
+* 20260119
+
+    [k8s proxy](debian13_docker_install/readme.md)
